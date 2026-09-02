@@ -1,0 +1,86 @@
+{
+	"editor.detectIndentation": false,
+	"editor.formatOnSave": true,
+	"editor.insertSpaces": false,
+	"editor.tabSize": 2,
+	"editor.useTabStops": true,
+
+	"files.associations": {
+		"*.css": "tailwindcss"
+	},
+
+	"prettier.printWidth": 80,
+	"prettier.tabWidth": 2,
+	"prettier.useTabs": true,
+	"prettier.semi": true,
+	"prettier.singleQuote": false,
+	"prettier.quoteProps": "as-needed",
+	"prettier.jsxSingleQuote": false,
+	"prettier.trailingComma": "all",
+	"prettier.bracketSpacing": true,
+	"prettier.bracketSameLine": false,
+	"prettier.arrowParens": "always",
+	"prettier.requirePragma": false,
+	"prettier.insertPragma": false,
+	"prettier.proseWrap": "preserve",
+	"prettier.htmlWhitespaceSensitivity": "css",
+	"prettier.vueIndentScriptAndStyle": false,
+	"prettier.endOfLine": "lf",
+	"prettier.embeddedLanguageFormatting": "auto",
+	"prettier.singleAttributePerLine": false,
+	"prettier.withNodeModules": false,
+
+	"importSorter.generalConfiguration.sortOnBeforeSave": true,
+	"importSorter.importStringConfiguration.hasSemicolon": true,
+	"importSorter.importStringConfiguration.quoteMark": "double",
+	"importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 80,
+	"importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
+	"importSorter.importStringConfiguration.tabSize": 2,
+	"importSorter.importStringConfiguration.tabType": "tab",
+	"importSorter.importStringConfiguration.trailingComma": "multiLine",
+
+	"material-icon-theme.folders.associations": {
+		"features": "plugin"
+	},
+
+	"tailwindCSS.classAttributes": [
+		"class",
+		"classes",
+		"className",
+		"ngClass",
+		".*Classes",
+		".*Props"
+	],
+	"tailwindCSS.experimental.classRegex": [
+		["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+		["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+	],
+
+	"[javascript]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascriptreact]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[json]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[jsonc]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescript]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescriptreact]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[html]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
+}

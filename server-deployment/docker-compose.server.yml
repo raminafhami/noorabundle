@@ -1,0 +1,144 @@
+name: apk-production
+
+services:
+  frontend:
+    image: apk-frontend:${IMAGE_TAG:-latest}
+    build:
+      context: ../noora_frontend-develop
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_INTERNAL_API_URL: ${PUBLIC_API_URL:?Set PUBLIC_API_URL}
+        NEXT_PUBLIC_EXTERNAL_API_URL: ${PUBLIC_API_URL:?Set PUBLIC_API_URL}
+        NEXT_PUBLIC_APP_URL: ${PUBLIC_APP_URL:?Set PUBLIC_APP_URL}
+        NEXT_PUBLIC_SEPIDAR_SERVICE_CODE_COI: ${SEPIDAR_SERVICE_CODE_COI:-}
+        NEXT_PUBLIC_SEPIDAR_SERVICE_CODE_IC: ${SEPIDAR_SERVICE_CODE_IC:-}
+        NEXT_PUBLIC_SEPIDAR_SERVICE_CODE_SAMPLING: ${SEPIDAR_SERVICE_CODE_SAMPLING:-}
+    restart: unless-stopped
+    init: true
+    ports:
+      - "${BIND_IP:-127.0.0.1}:${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.status<500?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks: [app_net]
+
+  backend:
+    image: apk-backend:${IMAGE_TAG:-latest}
+    build:
+      context: ../noora-flow-main
+      dockerfile: Dockerfile
+      target: production
+    restart: unless-stopped
+    init: true
+    env_file:
+      - ${SERVER_ENV_FILE:-.env.server}
+    environment:
+      APP_ENV: production
+      APP_PORT: 4000
+      MONGO_URI: mongodb://mongo:27017/?authSource=admin
+      MONGO_USER: ${MONGO_ROOT_USERNAME:?Set MONGO_ROOT_USERNAME}
+      MONGO_PASS: ${MONGO_ROOT_PASSWORD:?Set MONGO_ROOT_PASSWORD}
+      MONGO_DBNAME: ${MONGO_DATABASE:-apk}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB_INDEX: 0
+      ELASTIC_NODE: http://elasticsearch:9200
+      ELASTIC_USERNAME: elastic
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?Set ELASTIC_PASSWORD}
+      PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium
+    ports:
+      - "${BIND_IP:-127.0.0.1}:${BACKEND_PORT:-4000}:4000"
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/').then(()=>process.exit(0)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    volumes:
+      - backend_assets:/app/assets
+      - backend_statics:/app/statics
+      - inspection_files:/app/inspection-files
+      - instance_documents:/app/documents
+      - user_documents:/app/users-docs
+      - asset_requirements:/app/asset-requirements
+      - ticket_files:/app/tickts
+      - app_documents:/app/app-docs
+    networks: [app_net]
+
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:?Set MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:?Set MONGO_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --host 127.0.0.1 --username \"$$MONGO_INITDB_ROOT_USERNAME\" --password \"$$MONGO_INITDB_ROOT_PASSWORD\" --authenticationDatabase admin --eval 'db.adminCommand({ping:1}).ok' | grep 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    volumes:
+      - mongo_data:/data/db
+    networks: [app_net]
+
+  redis:
+    image: redis:7.2-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - redis_data:/data
+    networks: [app_net]
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "true"
+      xpack.security.http.ssl.enabled: "false"
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?Set ELASTIC_PASSWORD}
+      ES_JAVA_OPTS: ${ES_JAVA_OPTS:--Xms512m -Xmx512m}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS -u elastic:\"$$ELASTIC_PASSWORD\" http://127.0.0.1:9200/_cluster/health >/dev/null"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 60s
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data
+    networks: [app_net]
+
+networks:
+  app_net:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  redis_data:
+  elastic_data:
+  backend_assets:
+  backend_statics:
+  inspection_files:
+  instance_documents:
+  user_documents:
+  asset_requirements:
+  ticket_files:
+  app_documents:

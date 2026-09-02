@@ -1,0 +1,14 @@
+.git
+dist
+node_modules
+coverage
+*.log
+.env*
+Dockerfile*
+docker-compose*.yml
+inspection-files
+instance-documents
+users-docs
+asset-requirements
+tickts
+app-docs
