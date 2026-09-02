@@ -108,7 +108,7 @@ services:
     networks: [app_net]
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
+    image: elasticsearch:7.17.20
     restart: unless-stopped
     environment:
       discovery.type: single-node
