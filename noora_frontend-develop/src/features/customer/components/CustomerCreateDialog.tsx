@@ -104,13 +104,14 @@ function CustomerCreateDialog({
 					phoneNo: z
 						.string()
 						.refine(
-							(value) => value || identity.branchId,
+							(value) => value || identity?.branchId,
 							messages.validation.required,
 						)
 						.refine(
 							(value) =>
-								(value.startsWith("0") && value.length !== 11) ||
-								(value.startsWith("+") && value.length < 11),
+								!value ||
+								(value.startsWith("0") && value.length === 11) ||
+								(value.startsWith("+") && value.length >= 11),
 							messages.validation.invalid("شماره همراه"),
 						),
 					email: z.string(),
@@ -172,7 +173,7 @@ function CustomerCreateDialog({
 						}
 					},
 				),
-		[identity.branchId],
+		[identity?.branchId],
 	);
 
 	type FormSchema = z.infer<typeof formSchema>;
@@ -212,6 +213,13 @@ function CustomerCreateDialog({
 	const { industryId, moneyReturn } = watch();
 
 	async function handleSubmit(data: FormSchema) {
+		if (!identity) {
+			setError("root.server", {
+				message: "اطلاعات کاربر هنوز بارگذاری نشده است. لطفاً دوباره تلاش کنید.",
+			});
+			return;
+		}
+
 		try {
 			let relations: CustomerRelation[] = [];
 			if (data.creatorRole !== "none") {
@@ -401,7 +409,7 @@ function CustomerCreateDialog({
 									<FormItem className="col-span-full sm:col-span-6">
 										<FormLabel>
 											شماره همراه
-											{!identity.branchId && (
+											{!identity?.branchId && (
 												<span className="text-red-600"> *</span>
 											)}
 										</FormLabel>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1cqxbws" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:collaboration id="Collaboration_1ad3sid">
+    <bpmn:participant id="Participant_0zoi42i" processRef="DaveTest" />
+  </bpmn:collaboration>
+  <bpmn:process id="DaveTest" name="ثبت دریافت هزینه بازرسی" isExecutable="true">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property name="documents" value="{&#34;types&#34;:{&#34;receipt&#34;:{&#34;title&#34;:&#34;رسید پرداخت / PAYMENT RECEIPT&#34;,&#34;extensions&#34;:[&#34;jpg&#34;,&#34;jpeg&#34;,&#34;png&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false}},&#34;folders&#34;:{&#34;receipts&#34;:{&#34;title&#34;:&#34;رسیدهای پرداخت / PAYMENT RECEIPTS&#34;,&#34;types&#34;:[&#34;receipt&#34;]}}}" />
+        <camunda:property name="indicator" value="inspection" />
+        <camunda:property name="displayable" value="true" />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_1tieyr3">
+      <bpmn:lane id="Lane_18ok8ax" name="Information Filling">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>PaymentForm</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_0ggi62g" name="Information Review">
+        <bpmn:flowNodeRef>PaymentReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0aeyycs</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0e48npm</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="PaymentForm" name="ثبت وجه دریافتی" camunda:assignee="$[owner]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Type" type="string" />
+          <camunda:formField id="Name" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0e48npm</bpmn:incoming>
+      <bpmn:outgoing>Flow_0j5nosl</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0e48npm" sourceRef="StartEvent_1" targetRef="PaymentForm" />
+    <bpmn:sequenceFlow id="Flow_0j5nosl" sourceRef="PaymentForm" targetRef="PaymentReview" />
+    <bpmn:userTask id="PaymentReview" name="بررسی وجه دریافتی" camunda:assignee="$[data.Assignees.financialExpert.id]" camunda:candidateGroups="financial-expert">
+      <bpmn:extensionElements>
+        <camunda:formData />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0j5nosl</bpmn:incoming>
+      <bpmn:outgoing>Flow_1icghd7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0aeyycs">
+      <bpmn:incoming>Flow_1icghd7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1icghd7" sourceRef="PaymentReview" targetRef="Event_0aeyycs" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1ad3sid">
+      <bpmndi:BPMNShape id="Participant_0zoi42i_di" bpmnElement="Participant_0zoi42i" isHorizontal="true">
+        <dc:Bounds x="129" y="79" width="1151" height="491" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0ggi62g_di" bpmnElement="Lane_0ggi62g" isHorizontal="true">
+        <dc:Bounds x="159" y="329" width="1121" height="241" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_18ok8ax_di" bpmnElement="Lane_18ok8ax" isHorizontal="true">
+        <dc:Bounds x="159" y="79" width="1121" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="292" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bnq5ww_di" bpmnElement="PaymentForm">
+        <dc:Bounds x="410" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ugfv7i_di" bpmnElement="PaymentReview">
+        <dc:Bounds x="600" y="410" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0aeyycs_di" bpmnElement="Event_0aeyycs">
+        <dc:Bounds x="792" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0e48npm_di" bpmnElement="Flow_0e48npm">
+        <di:waypoint x="328" y="200" />
+        <di:waypoint x="410" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0j5nosl_di" bpmnElement="Flow_0j5nosl">
+        <di:waypoint x="510" y="200" />
+        <di:waypoint x="650" y="200" />
+        <di:waypoint x="650" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1icghd7_di" bpmnElement="Flow_1icghd7">
+        <di:waypoint x="700" y="450" />
+        <di:waypoint x="792" y="450" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

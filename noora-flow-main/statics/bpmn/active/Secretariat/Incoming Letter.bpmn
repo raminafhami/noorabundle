@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1wq50zs" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.30.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+  <bpmn:collaboration id="Collaboration_164rr13">
+    <bpmn:participant id="Participant_063hi27" processRef="SecretariatIncomingLetter" />
+  </bpmn:collaboration>
+  <bpmn:process id="SecretariatIncomingLetter" name="نامه وارده" isExecutable="true">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property name="indicator" value="letter" />
+        <camunda:property name="displayable" value="true" />
+        <camunda:property name="documents" value="{&#34;types&#34;: {&#34;letter&#34;: {&#34;title&#34;: &#34;نامه&#34;,&#34;extensions&#34;: [&#34;jpg&#34;, &#34;jpeg&#34;, &#34;png&#34;, &#34;doc&#34;, &#34;docx&#34;, &#34;pdf&#34;],&#34;multiple&#34;: true}},&#34;folders&#34;: {&#34;letters&#34;: {&#34;title&#34;: &#34;نامه ها&#34;,&#34;types&#34;: [&#34;letter&#34;]}}}" />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_0sxth5m">
+      <bpmn:lane id="Lane_09or9wt" name="دبیرخانه">
+        <bpmn:flowNodeRef>Event_0ebgpqz</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1w124l1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>LetterFormByAuthor</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_0w3mk0x" name="مسئول نامه">
+        <bpmn:flowNodeRef>Gateway_0n0icd0</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>LetterReviewByManager</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:endEvent id="Event_0ebgpqz">
+      <bpmn:incoming>Flow_0by4liw</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_1w124l1">
+      <bpmn:incoming>Flow_10057vx</bpmn:incoming>
+      <bpmn:outgoing>Flow_1r7zydl</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0by4liw</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0fs8o94</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_0n0icd0">
+      <bpmn:incoming>Flow_1p1i6te</bpmn:incoming>
+      <bpmn:outgoing>Flow_10057vx</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0sorqa7</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0fs8o94" sourceRef="StartEvent_1" targetRef="LetterFormByAuthor" />
+    <bpmn:sequenceFlow id="Flow_1r7zydl" name="بازگشت به ایجاد کننده" sourceRef="Gateway_1w124l1" targetRef="LetterFormByAuthor">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.LetterReviewByManagerStatus] == "return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0sli2bb" sourceRef="LetterFormByAuthor" targetRef="LetterReviewByManager" />
+    <bpmn:sequenceFlow id="Flow_0by4liw" name="تایید" sourceRef="Gateway_1w124l1" targetRef="Event_0ebgpqz">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.LetterReviewByManagerStatus] == "confirm"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_10057vx" name="تایید" sourceRef="Gateway_0n0icd0" targetRef="Gateway_1w124l1">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.Reassign] == false</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1p1i6te" sourceRef="LetterReviewByManager" targetRef="Gateway_0n0icd0" />
+    <bpmn:sequenceFlow id="Flow_0sorqa7" name="انتصاب به دیگری" sourceRef="Gateway_0n0icd0" targetRef="LetterReviewByManager">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.Reassign] == true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="LetterFormByAuthor" name="بارگذاری نامه" camunda:assignee="$[owner]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="LetterFormByAuthorNote" type="string" />
+          <camunda:formField id="LetterPriority" type="string" />
+          <camunda:formField id="LetterConfidentiality" type="string" />
+          <camunda:formField id="LetterFromName" type="string" />
+          <camunda:formField id="LetterSubject" type="string" />
+          <camunda:formField id="LetterHasAttachments" type="boolean" />
+          <camunda:formField id="LetterDate" type="date" />
+          <camunda:formField id="LetterFormByAuthorStatus" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,LetterReviewByManagerStatus,LetterReviewByManagerNote" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0fs8o94</bpmn:incoming>
+      <bpmn:incoming>Flow_1r7zydl</bpmn:incoming>
+      <bpmn:outgoing>Flow_0sli2bb</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="LetterReviewByManager" name="بررسی نامه" camunda:assignee="$[data.Assignees.Manager.id]">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,LetterFormByAuthorNote,LetterPriority,LetterConfidentiality,LetterFromName,LetterSubject,LetterHasAttachments,LetterDate,LetterFormByAuthorStatus" />
+        </camunda:properties>
+        <camunda:formData>
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="LetterReviewByManagerStatus" type="string" />
+          <camunda:formField id="LetterReviewByManagerNote" type="string" />
+          <camunda:formField id="LetterNo" type="string" />
+          <camunda:formField id="LetterSignature" type="string" />
+          <camunda:formField id="Reassign" type="boolean" />
+          <camunda:formField id="ReviewHistory" type="object" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0sli2bb</bpmn:incoming>
+      <bpmn:incoming>Flow_0sorqa7</bpmn:incoming>
+      <bpmn:outgoing>Flow_1p1i6te</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_164rr13">
+      <bpmndi:BPMNShape id="Participant_063hi27_di" bpmnElement="Participant_063hi27" isHorizontal="true">
+        <dc:Bounds x="160" y="50" width="1078" height="430" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0w3mk0x_di" bpmnElement="Lane_0w3mk0x" isHorizontal="true">
+        <dc:Bounds x="190" y="250" width="1048" height="230" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_09or9wt_di" bpmnElement="Lane_09or9wt" isHorizontal="true">
+        <dc:Bounds x="190" y="50" width="1048" height="200" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ebgpqz_di" bpmnElement="Event_0ebgpqz">
+        <dc:Bounds x="1182" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1w124l1_di" bpmnElement="Gateway_1w124l1" isMarkerVisible="true">
+        <dc:Bounds x="965" y="155" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="282" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0n0icd0_di" bpmnElement="Gateway_0n0icd0" isMarkerVisible="true">
+        <dc:Bounds x="915" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xc0kja_di" bpmnElement="LetterFormByAuthor">
+        <dc:Bounds x="450" y="140" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1g52fma_di" bpmnElement="LetterReviewByManager">
+        <dc:Bounds x="580" y="350" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0fs8o94_di" bpmnElement="Flow_0fs8o94">
+        <di:waypoint x="318" y="180" />
+        <di:waypoint x="450" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1r7zydl_di" bpmnElement="Flow_1r7zydl">
+        <di:waypoint x="990" y="155" />
+        <di:waypoint x="990" y="110" />
+        <di:waypoint x="500" y="110" />
+        <di:waypoint x="500" y="140" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="714" y="76" width="72" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sli2bb_di" bpmnElement="Flow_0sli2bb">
+        <di:waypoint x="500" y="220" />
+        <di:waypoint x="500" y="390" />
+        <di:waypoint x="580" y="390" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0by4liw_di" bpmnElement="Flow_0by4liw">
+        <di:waypoint x="1015" y="180" />
+        <di:waypoint x="1182" y="180" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1089" y="162" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10057vx_di" bpmnElement="Flow_10057vx">
+        <di:waypoint x="965" y="400" />
+        <di:waypoint x="990" y="400" />
+        <di:waypoint x="990" y="205" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1000" y="343" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1p1i6te_di" bpmnElement="Flow_1p1i6te">
+        <di:waypoint x="680" y="400" />
+        <di:waypoint x="915" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sorqa7_di" bpmnElement="Flow_0sorqa7">
+        <di:waypoint x="940" y="375" />
+        <di:waypoint x="940" y="320" />
+        <di:waypoint x="630" y="320" />
+        <di:waypoint x="630" y="350" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="750" y="302" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

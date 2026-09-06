@@ -1,0 +1,7 @@
+services:
+  frontend:
+    build:
+      args:
+        NEXT_PUBLIC_INTERNAL_API_URL: http://backend:4000
+        NEXT_PUBLIC_EXTERNAL_API_URL: http://localhost:4200
+        NEXT_PUBLIC_APP_URL: http://localhost:3200

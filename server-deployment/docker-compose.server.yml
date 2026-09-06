@@ -52,6 +52,15 @@ services:
       ELASTIC_USERNAME: elastic
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?Set ELASTIC_PASSWORD}
       PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium
+      SEED_SUPER_ADMIN_ENABLED: ${SEED_SUPER_ADMIN_ENABLED:-true}
+      SEED_SUPER_ADMIN_PHONE: ${SEED_SUPER_ADMIN_PHONE:?Set SEED_SUPER_ADMIN_PHONE}
+      SEED_SUPER_ADMIN_PASSWORD: ${SEED_SUPER_ADMIN_PASSWORD:?Set SEED_SUPER_ADMIN_PASSWORD}
+      SEED_SUPER_ADMIN_USERNAME: ${SEED_SUPER_ADMIN_USERNAME:-super-admin}
+      SEED_SUPER_ADMIN_NAME: ${SEED_SUPER_ADMIN_NAME:-مدیر}
+      SEED_SUPER_ADMIN_LASTNAME: ${SEED_SUPER_ADMIN_LASTNAME:-ارشد سامانه}
+      SEED_SUPER_ADMIN_NATIONAL_CODE: ${SEED_SUPER_ADMIN_NATIONAL_CODE:-}
+      SEED_SUPER_ADMIN_EMAIL: ${SEED_SUPER_ADMIN_EMAIL:-}
+      SEED_SUPER_ADMIN_RESET_PASSWORD: ${SEED_SUPER_ADMIN_RESET_PASSWORD:-false}
     ports:
       - "${BIND_IP:-127.0.0.1}:${BACKEND_PORT:-4000}:4000"
     depends_on:
@@ -76,6 +85,23 @@ services:
       - asset_requirements:/app/asset-requirements
       - ticket_files:/app/tickts
       - app_documents:/app/app-docs
+    networks: [app_net]
+
+  demo-seeder:
+    image: node:20-alpine
+    restart: "no"
+    working_dir: /seed
+    command: ["node", "/seed/seed-product-demo.mjs"]
+    environment:
+      DEMO_SEED_ENABLED: ${DEMO_SEED_ENABLED:-true}
+      DEMO_SEED_API_URL: http://backend:4000
+      SEED_SUPER_ADMIN_PHONE: ${SEED_SUPER_ADMIN_PHONE:?Set SEED_SUPER_ADMIN_PHONE}
+      SEED_SUPER_ADMIN_PASSWORD: ${SEED_SUPER_ADMIN_PASSWORD:?Set SEED_SUPER_ADMIN_PASSWORD}
+    volumes:
+      - ./seed-product-demo.mjs:/seed/seed-product-demo.mjs:ro
+    depends_on:
+      backend:
+        condition: service_healthy
     networks: [app_net]
 
   mongo:

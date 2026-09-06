@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0l3vkat" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:collaboration id="Collaboration_1r304pc">
+    <bpmn:participant id="Participant_1mq1k0x" processRef="Inspection_Case_COI" />
+  </bpmn:collaboration>
+  <bpmn:process id="Inspection_Case_COI" name="بازرسی COI" isExecutable="true" camunda:candidateStarterGroups="coordinator,coi-admin">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property name="documents" value="{&#34;types&#34;:{&#34;contract&#34;:{&#34;title&#34;:&#34;قرارداد بازرسی / CONTRACT&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;proforma&#34;:{&#34;title&#34;:&#34;پروفرما / PROFORMA INVOICE&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;invoice&#34;:{&#34;title&#34;:&#34;اینویس / COMMERCIAL INVOICE&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;packing_list&#34;:{&#34;title&#34;:&#34;پکینگ لیست / PACKING LIST&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;bill_of_lading&#34;:{&#34;title&#34;:&#34;بارنامه / ORIGINAL (MBL/HBL)&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;certificate_of_origin&#34;:{&#34;title&#34;:&#34;گواهی مبدا / CERTIFICATE OF ORIGIN&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;registration_order&#34;:{&#34;title&#34;:&#34;ثبت سفارش / REGISTRATION ORDER&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;delivery_order&#34;:{&#34;title&#34;:&#34;اعلامیه ورود / DELIVERY ORDERS&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;warehouse_receipt&#34;:{&#34;title&#34;:&#34;قبض انبار / WAREHOUSE RECEIPT&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;inspection_pic&#34;:{&#34;title&#34;:&#34;عکس بازرسی / INSPECTION&#34;,&#34;extensions&#34;:[&#34;jpg&#34;,&#34;jpeg&#34;,&#34;png&#34;],&#34;multiple&#34;:true},&#34;inspection_certificate&#34;:{&#34;title&#34;:&#34;گواهی بازرسی / INSPECTION CERTIFICATE&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;test_report&#34;:{&#34;title&#34;:&#34;گزارش بازرسی / TEST REPORT&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;,&#34;zip&#34;],&#34;multiple&#34;:true},&#34;manufacturer_declaration&#34;:{&#34;title&#34;:&#34;گواهی سازنده / MANUFACTURER&#39;S DECLARATION&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;,&#34;zip&#34;],&#34;multiple&#34;:true},&#34;payment&#34;:{&#34;title&#34;:&#34;پرداخت / PAYMENT&#34;,&#34;extensions&#34;:[&#34;jpg&#34;,&#34;jpeg&#34;,&#34;png&#34;,&#34;pdf&#34;],&#34;multiple&#34;:true},&#34;misc&#34;:{&#34;title&#34;:&#34;سایر&#34;,&#34;extensions&#34;:[&#34;jpg&#34;,&#34;jpeg&#34;,&#34;png&#34;,&#34;docx&#34;,&#34;pdf&#34;,&#34;zip&#34;],&#34;multiple&#34;:true}},&#34;folders&#34;:{&#34;contract&#34;:{&#34;title&#34;:&#34;قرارداد / CONTRACT&#34;,&#34;types&#34;:[&#34;contract&#34;]},&#34;docs&#34;:{&#34;title&#34;:&#34;اسناد / DOCS&#34;,&#34;types&#34;:[&#34;proforma&#34;,&#34;invoice&#34;,&#34;packing_list&#34;,&#34;bill_of_lading&#34;,&#34;certificate_of_origin&#34;,&#34;registration_order&#34;,&#34;delivery_order&#34;,&#34;warehouse_receipt&#34;,&#34;misc&#34;]},&#34;history&#34;:{&#34;title&#34;:&#34;پیشینه / HISTORY&#34;,&#34;types&#34;:[&#34;misc&#34;]},&#34;ivr&#34;:{&#34;title&#34;:&#34;گزارش تایید بازرسی / IVR&#34;,&#34;types&#34;:[&#34;misc&#34;]},&#34;payment&#34;:{&#34;title&#34;:&#34;پرداخت / PAYMENT&#34;,&#34;types&#34;:[&#34;payment&#34;]},&#34;pic&#34;:{&#34;title&#34;:&#34;عکس ها / PICS&#34;,&#34;types&#34;:[&#34;inspection_pic&#34;]},&#34;scanned_docs&#34;:{&#34;title&#34;:&#34;اسناد اسکن شده / SCANNED DOCS&#34;,&#34;types&#34;:[&#34;inspection_certificate&#34;,&#34;misc&#34;]},&#34;tr_md&#34;:{&#34;title&#34;:&#34;گزارش بازرسی/گواهی سازنده / TR/MD&#34;,&#34;types&#34;:[&#34;test_report&#34;,&#34;manufacturer_declaration&#34;]}}}" />
+        <camunda:property name="stateList" value="[{&#34;name&#34;:&#34;information-filling&#34;,&#34;title&#34;:&#34;تکمیل اطلاعات&#34;},{&#34;name&#34;:&#34;information-review&#34;,&#34;title&#34;:&#34;بررسی اطلاعات&#34;},{&#34;name&#34;:&#34;contract-filling&#34;,&#34;title&#34;:&#34;تکمیل قرارداد&#34;},{&#34;name&#34;:&#34;contract-review&#34;,&#34;title&#34;:&#34;بررسی قرارداد&#34;},{&#34;name&#34;:&#34;inspection-refer&#34;,&#34;title&#34;:&#34;ارجاع به بازرسی&#34;},{&#34;name&#34;:&#34;inspection&#34;,&#34;title&#34;:&#34;اجرای فرایند بازرسی&#34;},{&#34;name&#34;:&#34;certificate-issuance&#34;,&#34;title&#34;:&#34;صدور گواهی&#34;}]" />
+        <camunda:property name="displayable" value="true" />
+        <camunda:property name="indicator" value="inspection" />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_1njulcz">
+      <bpmn:lane id="Lane_0sqoq29" name="Senior Expert">
+        <bpmn:flowNodeRef>CertificateReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0jilnwa</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_0f4kpfu" name="Coordinator / Admin">
+        <bpmn:flowNodeRef>Gateway_002wa5h</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InspectionMethodForm</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0828ltv</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_10t3kp0" name="Customer" />
+      <bpmn:lane id="Lane_1fgl7ne" name="Coordinator">
+        <bpmn:flowNodeRef>Event_1868wkt</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InformationFormByCoordinator</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1un3iqq" name="COI Manager / Technical Manager">
+        <bpmn:flowNodeRef>InformationFinalReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InformationReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_079vbe8</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_19luv05</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CertificatePreview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0i58ym6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0he9taa</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1f328zs" name="Admin">
+        <bpmn:flowNodeRef>InformationFormByAdmin</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CertificateFormByAdmin</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_07a3bpx" name="Technical Expert">
+        <bpmn:flowNodeRef>CertificateFormByTechExpert</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:sequenceFlow id="Flow_18lrcsm" sourceRef="InspectionMethodForm" targetRef="Gateway_002wa5h" />
+    <bpmn:sequenceFlow id="Flow_1k012ua" sourceRef="StartEvent_1" targetRef="InspectionMethodForm" />
+    <bpmn:sequenceFlow id="Flow_0imxnwh" sourceRef="Gateway_002wa5h" targetRef="InformationFormByCoordinator">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ownerGroup] == "coordinator"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_06tn89s" sourceRef="CertificatePreview" targetRef="Event_0i58ym6" />
+    <bpmn:sequenceFlow id="Flow_0pqdx2w" sourceRef="CertificateReview" targetRef="InformationFinalReview" />
+    <bpmn:sequenceFlow id="Flow_0qjd0h8" sourceRef="CertificateFormByTechExpert" targetRef="Gateway_0jilnwa" />
+    <bpmn:sequenceFlow id="Flow_0w6kwil" sourceRef="InformationFormByAdmin" targetRef="InformationReview" />
+    <bpmn:sequenceFlow id="Flow_1ayqgow" sourceRef="Gateway_002wa5h" targetRef="InformationFormByAdmin">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ownerGroup] == "coi-admin"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1ip5k47" sourceRef="InformationFormByCoordinator" targetRef="InformationFormByAdmin" />
+    <bpmn:sequenceFlow id="Flow_0qagmwm" sourceRef="Gateway_079vbe8" targetRef="InformationFormByAdmin">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationReviewStatus] == "return-admin"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_02p737b" sourceRef="Gateway_079vbe8" targetRef="Gateway_0he9taa">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationReviewStatus] == "approve"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0rh41r0" sourceRef="Gateway_079vbe8" targetRef="InformationFormByCoordinator">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationReviewStatus] == "return-coordinator"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1i51bal" sourceRef="InformationReview" targetRef="Gateway_079vbe8" />
+    <bpmn:sequenceFlow id="Flow_0fozm3q" name="عدم تایید اطلاعات درخواست" sourceRef="Gateway_19luv05" targetRef="Gateway_0he9taa">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationFinalReviewStatus] == "return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0rwqcwa" name="تایید اطلاعات درخواست" sourceRef="Gateway_19luv05" targetRef="CertificatePreview">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationFinalReviewStatus] == "approve"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0suje2p" sourceRef="InformationFinalReview" targetRef="Gateway_19luv05" />
+    <bpmn:exclusiveGateway id="Gateway_002wa5h">
+      <bpmn:incoming>Flow_18lrcsm</bpmn:incoming>
+      <bpmn:outgoing>Flow_0imxnwh</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1ayqgow</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:extensionElements />
+      <bpmn:outgoing>Flow_1k012ua</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="InspectionMethodForm" name="تعیین روش بازرسی" camunda:assignee="$[owner]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="InspectionMethod" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="ownerGroup" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1k012ua</bpmn:incoming>
+      <bpmn:outgoing>Flow_18lrcsm</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="InformationFinalReview" name="بررسی نهایی اطلاعات" camunda:assignee="$[data.Assignees.technicalManager.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="InformationFinalReviewNote" type="string" />
+          <camunda:formField id="InformationFinalReviewStatus" type="string" />
+          <camunda:formField id="IssueDate" type="string" />
+          <camunda:formField id="IssueNo" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,BillOfLadingDate,BillOfLadingNo,Brand,Buyer,CaseType,CountryOfOrigin,CertificateConclusion,CertificateFormByAdminNote,CertificateFormByTechExpertNote,CertificateReviewNote,Consignee,CustomName,DischargerName,DischargerPhoneNo,Goods,GoodsField,GrossWeight,Exporter,Importer,InformationFinalReviewNote,InformationFinalReviewStatus,InspectionDateEnd,InspectionDateStart,InspectionFee,InspectionFeeCurrency,InspectionFeeCurrencyRate,InspectionFeeInRial,InspectionMethod,InspectionPlace,InspectorName,IssueNo,IssueDate,LabName,Manufacturer,Packing,PortOfEntry,ProformaNo,ProformaDate,QuantityShipped,QuantityTested,SamplingDate,TestDateEnd,TestDateStart,Shipper" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0pqdx2w</bpmn:incoming>
+      <bpmn:outgoing>Flow_0suje2p</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="InformationReview" name="بررسی اطلاعات" camunda:candidateGroups="coi-manager">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="InformationReviewNote" type="string" />
+          <camunda:formField id="InformationReviewStatus" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,Buyer,CaseType,CountryOfOrigin,CustomName,DischargerName,DischargerPhoneNo,GoodsDescriptions,GoodsField,InformationFormByAdminNote,InformationReviewNote,InformationReviewStatus,InspectionMethod,InspectionFeeCurrency,InspectionFeeCurrencyRate,InspectionFee,InspectionFeeInRial,InspectionPlace" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0w6kwil</bpmn:incoming>
+      <bpmn:outgoing>Flow_1i51bal</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="InformationFormByAdmin" name="تکمیل اطلاعات" camunda:assignee="$[data.Assignees.admin.id]" camunda:candidateGroups="coi-admin">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="Branch" type="object" />
+          <camunda:formField id="Buyer" type="object" />
+          <camunda:formField id="CaseType" type="string" />
+          <camunda:formField id="CountryOfOrigin" type="string" />
+          <camunda:formField id="CustomName" type="string" />
+          <camunda:formField id="DischargerName" type="string" />
+          <camunda:formField id="DischargerPhoneNo" type="string" />
+          <camunda:formField id="GoodsDescriptions" type="string" />
+          <camunda:formField id="GoodsField" type="string" />
+          <camunda:formField id="InformationFormByAdminNote" type="string" />
+          <camunda:formField id="InspectionFeeCurrency" type="string" />
+          <camunda:formField id="InspectionFeeCurrencyRate" type="string" />
+          <camunda:formField id="InspectionFee" type="string" />
+          <camunda:formField id="InspectionFeeInRial" type="string" />
+          <camunda:formField id="InspectionPlace" type="string" />
+          <camunda:formField id="InvoiceDescription" type="string" />
+          <camunda:formField id="InvoiceRemaining" type="string" />
+          <camunda:formField id="InvoiceTax" type="string" />
+          <camunda:formField id="InvoiceToll" type="string" />
+          <camunda:formField id="InvoiceTotal" type="string" />
+          <camunda:formField id="InvoiceTotalInText" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,Branch,Buyer,CaseType,CountryOfOrigin,CustomName,DischargerName,DischargerPhoneNo,GoodsDescriptions,GoodsField,InformationFormByAdminNote,InformationFormByCoordinatorNote,InformationReviewStatus,InformationReviewNote,InspectionFeeCurrency,InspectionFeeCurrencyRate,InspectionFee,InspectionFeeInRial,InspectionMethod,InspectionPlace,InvoiceDescription,InvoiceRemaining,InvoiceTax,InvoiceToll,InvoiceTotal,InvoiceTotalInText" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ip5k47</bpmn:incoming>
+      <bpmn:incoming>Flow_0qagmwm</bpmn:incoming>
+      <bpmn:incoming>Flow_1ayqgow</bpmn:incoming>
+      <bpmn:outgoing>Flow_0w6kwil</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_079vbe8">
+      <bpmn:incoming>Flow_1i51bal</bpmn:incoming>
+      <bpmn:outgoing>Flow_0rh41r0</bpmn:outgoing>
+      <bpmn:outgoing>Flow_02p737b</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0qagmwm</bpmn:outgoing>
+      <bpmn:outgoing>Flow_015scwr</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_19luv05">
+      <bpmn:incoming>Flow_0suje2p</bpmn:incoming>
+      <bpmn:outgoing>Flow_0fozm3q</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0rwqcwa</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="CertificateFormByAdmin" name="ثبت اطلاعات گواهی" camunda:assignee="$[data.Assignees.admin.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="BillOfLadingNo" type="string" />
+          <camunda:formField id="BillOfLadingDate" type="string" />
+          <camunda:formField id="Brand" type="string" />
+          <camunda:formField id="CertificateConclusion" type="string" />
+          <camunda:formField id="CertificateFormByAdminNote" type="string" />
+          <camunda:formField id="Consignee" type="string" />
+          <camunda:formField id="Exporter" type="string" />
+          <camunda:formField id="GrossWeight" type="string" />
+          <camunda:formField id="Importer" type="string" />
+          <camunda:formField id="InspectorName" type="string" />
+          <camunda:formField id="LabName" type="string" />
+          <camunda:formField id="Manufacturer" type="string" />
+          <camunda:formField id="Packing" type="string" />
+          <camunda:formField id="PortOfEntry" type="string" />
+          <camunda:formField id="ProformaNo" type="string" />
+          <camunda:formField id="ProformaDate" type="string" />
+          <camunda:formField id="QuantityTested" type="string" />
+          <camunda:formField id="QuantityShipped" type="string" />
+          <camunda:formField id="Shipper" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,BillOfLadingNo,BillOfLadingDate,Brand,Buyer,CertificateConclusion,CertificateFormByAdminNote,Consignee,CountryOfOrigin,CustomName,Exporter,GrossWeight,Importer,InformationReviewNote,InformationFinalReviewStatus,InformationFinalReviewNote,InspectionMethod,InspectionPlace,InspectorName,LabName,Manufacturer,Packing,PortOfEntry,ProformaNo,ProformaDate,QuantityTested,QuantityShipped,Shipper" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1e562ri</bpmn:incoming>
+      <bpmn:outgoing>Flow_1po34iz</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="CertificatePreview" name="پیش نمایش گواهی" camunda:assignee="$[data.Assignees.technicalManager.id]">
+      <bpmn:extensionElements>
+        <camunda:formData />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0rwqcwa</bpmn:incoming>
+      <bpmn:outgoing>Flow_06tn89s</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0i58ym6">
+      <bpmn:incoming>Flow_06tn89s</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_015scwr" sourceRef="Gateway_079vbe8" targetRef="Event_1868wkt">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationReviewStatus] == "cancel"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_1868wkt">
+      <bpmn:incoming>Flow_015scwr</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="InformationFormByCoordinator" name="ثبت اطلاعات" camunda:assignee="$[data.Assignees.coordinator.id]">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,InformationFormByCoordinatorNote,InformationReviewStatus,InformationReviewNote,InspectionMethod" />
+        </camunda:properties>
+        <camunda:formData>
+          <camunda:formField id="InformationFormByCoordinatorNote" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0rh41r0</bpmn:incoming>
+      <bpmn:incoming>Flow_0imxnwh</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ip5k47</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_0828ltv" name="فیلدهای مدیریتی">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="ownerGroup" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:parallelGateway id="Gateway_0he9taa">
+      <bpmn:incoming>Flow_02p737b</bpmn:incoming>
+      <bpmn:incoming>Flow_0fozm3q</bpmn:incoming>
+      <bpmn:outgoing>Flow_1e562ri</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1jlf1u6</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1e562ri" sourceRef="Gateway_0he9taa" targetRef="CertificateFormByAdmin" />
+    <bpmn:userTask id="CertificateReview" name="بررسی اطلاعات گواهی" camunda:assignee="$[data.Assignees.seniorExpert.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="CertificateReviewNote" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,BillOfLadingNo,BillOfLadingDate,Brand,BuyerData,CertificateConclusion,CertificateFormByAdminNote,CertificateFormByTechExpertNote,CertificateReviewNote,Consignee,CountryOfOrigin,CustomName,Exporter,Goods,GrossWeight,Importer,InformationFinalReviewNote,InformationFinalReviewStatus,InspectionDateEnd,InspectionDateStart,InspectionMethod,InspectionPlace,InspectorName,LabName,Manufacturer,Packing,PortOfEntry,ProformaNo,ProformaDate,QuantityShipped,QuantityTested,SamplingDate,Shipper,TestDateEnd,TestDateStart" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_10ovxsw</bpmn:incoming>
+      <bpmn:outgoing>Flow_0pqdx2w</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1jlf1u6" sourceRef="Gateway_0he9taa" targetRef="CertificateFormByTechExpert" />
+    <bpmn:sequenceFlow id="Flow_1po34iz" sourceRef="CertificateFormByAdmin" targetRef="Gateway_0jilnwa" />
+    <bpmn:sequenceFlow id="Flow_10ovxsw" sourceRef="Gateway_0jilnwa" targetRef="CertificateReview" />
+    <bpmn:parallelGateway id="Gateway_0jilnwa">
+      <bpmn:incoming>Flow_0qjd0h8</bpmn:incoming>
+      <bpmn:incoming>Flow_1po34iz</bpmn:incoming>
+      <bpmn:outgoing>Flow_10ovxsw</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:userTask id="CertificateFormByTechExpert" name="تکمیل اطلاعات گواهی" camunda:assignee="$[data.Assignees.technicalExpert.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="CertificateFormByTechExpertNote" type="string" />
+          <camunda:formField id="Goods" type="object" />
+          <camunda:formField id="InspectionDateEnd" type="string" />
+          <camunda:formField id="InspectionDateStart" type="string" />
+          <camunda:formField id="SamplingDate" type="string" />
+          <camunda:formField id="TestDateEnd" type="string" />
+          <camunda:formField id="TestDateStart" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,BillOfLadingNo,BillOfLadingDate,Brand,Buyer,CertificateConclusion,CertificateFormByAdminNote,CertificateFormByTechExpertNote,Consignee,CountryOfOrigin,CustomName,Goods,GrossWeight,Exporter,Importer,InformationFinalReviewStatus,InformationFinalReviewNote,InspectionDateEnd,InspectionDateStart,InspectionMethod,InspectionPlace,InspectorName,LabName,Manufacturer,Packing,PortOfEntry,ProformaNo,ProformaDate,QuantityShipped,QuantityTested,SamplingDate,Shipper,TestDateEnd,TestDateStart" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1jlf1u6</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qjd0h8</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1r304pc">
+      <bpmndi:BPMNShape id="Participant_1mq1k0x_di" bpmnElement="Participant_1mq1k0x" isHorizontal="true">
+        <dc:Bounds x="129" y="80" width="3101" height="1620" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_07a3bpx_di" bpmnElement="Lane_07a3bpx" isHorizontal="true">
+        <dc:Bounds x="159" y="1220" width="3071" height="210" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1f328zs_di" bpmnElement="Lane_1f328zs" isHorizontal="true">
+        <dc:Bounds x="159" y="1000" width="3071" height="220" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1un3iqq_di" bpmnElement="Lane_1un3iqq" isHorizontal="true">
+        <dc:Bounds x="159" y="809" width="3071" height="191" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1fgl7ne_di" bpmnElement="Lane_1fgl7ne" isHorizontal="true">
+        <dc:Bounds x="159" y="620" width="3071" height="189" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_10t3kp0_di" bpmnElement="Lane_10t3kp0" isHorizontal="true">
+        <dc:Bounds x="159" y="390" width="3071" height="230" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0f4kpfu_di" bpmnElement="Lane_0f4kpfu" isHorizontal="true">
+        <dc:Bounds x="159" y="80" width="3071" height="310" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0sqoq29_di" bpmnElement="Lane_0sqoq29" isHorizontal="true">
+        <dc:Bounds x="159" y="1430" width="3071" height="270" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_002wa5h_di" bpmnElement="Gateway_002wa5h" isMarkerVisible="true">
+        <dc:Bounds x="615" y="215" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="282" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1i73l6b_di" bpmnElement="InspectionMethodForm">
+        <dc:Bounds x="380" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0jht0vu_di" bpmnElement="InformationFinalReview">
+        <dc:Bounds x="2130" y="860" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0e0av7s_di" bpmnElement="InformationReview">
+        <dc:Bounds x="1270" y="860" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_08tmw8r_di" bpmnElement="InformationFormByAdmin">
+        <dc:Bounds x="1060" y="1060" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_079vbe8_di" bpmnElement="Gateway_079vbe8" isMarkerVisible="true">
+        <dc:Bounds x="1485" y="875" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_19luv05_di" bpmnElement="Gateway_19luv05" isMarkerVisible="true">
+        <dc:Bounds x="2285" y="875" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1vafmuj_di" bpmnElement="CertificateFormByAdmin">
+        <dc:Bounds x="1650" y="1070" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0m4fpug_di" bpmnElement="CertificatePreview">
+        <dc:Bounds x="2470" y="860" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0i58ym6_di" bpmnElement="Event_0i58ym6">
+        <dc:Bounds x="2642" y="882" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1868wkt_di" bpmnElement="Event_1868wkt">
+        <dc:Bounds x="1492" y="692" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0mqjqur_di" bpmnElement="InformationFormByCoordinator">
+        <dc:Bounds x="930" y="670" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0y6mlxy_di" bpmnElement="Activity_0828ltv">
+        <dc:Bounds x="770" y="110" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0mwor52_di" bpmnElement="Gateway_0he9taa">
+        <dc:Bounds x="1675" y="875" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0huxpga_di" bpmnElement="CertificateReview">
+        <dc:Bounds x="2130" y="1530" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1eg8z15_di" bpmnElement="Gateway_0jilnwa">
+        <dc:Bounds x="1865" y="1545" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1j4ggew_di" bpmnElement="CertificateFormByTechExpert">
+        <dc:Bounds x="1840" y="1290" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_18lrcsm_di" bpmnElement="Flow_18lrcsm">
+        <di:waypoint x="480" y="240" />
+        <di:waypoint x="615" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1k012ua_di" bpmnElement="Flow_1k012ua">
+        <di:waypoint x="318" y="240" />
+        <di:waypoint x="380" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0imxnwh_di" bpmnElement="Flow_0imxnwh">
+        <di:waypoint x="665" y="240" />
+        <di:waypoint x="980" y="240" />
+        <di:waypoint x="980" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06tn89s_di" bpmnElement="Flow_06tn89s">
+        <di:waypoint x="2570" y="900" />
+        <di:waypoint x="2642" y="900" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pqdx2w_di" bpmnElement="Flow_0pqdx2w">
+        <di:waypoint x="2180" y="1530" />
+        <di:waypoint x="2180" y="940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qjd0h8_di" bpmnElement="Flow_0qjd0h8">
+        <di:waypoint x="1890" y="1370" />
+        <di:waypoint x="1890" y="1545" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0w6kwil_di" bpmnElement="Flow_0w6kwil">
+        <di:waypoint x="1160" y="1100" />
+        <di:waypoint x="1320" y="1100" />
+        <di:waypoint x="1320" y="940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ayqgow_di" bpmnElement="Flow_1ayqgow">
+        <di:waypoint x="640" y="265" />
+        <di:waypoint x="640" y="1100" />
+        <di:waypoint x="1060" y="1100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ip5k47_di" bpmnElement="Flow_1ip5k47">
+        <di:waypoint x="1030" y="710" />
+        <di:waypoint x="1110" y="710" />
+        <di:waypoint x="1110" y="1060" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qagmwm_di" bpmnElement="Flow_0qagmwm">
+        <di:waypoint x="1510" y="925" />
+        <di:waypoint x="1510" y="1170" />
+        <di:waypoint x="1110" y="1170" />
+        <di:waypoint x="1110" y="1140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02p737b_di" bpmnElement="Flow_02p737b">
+        <di:waypoint x="1535" y="900" />
+        <di:waypoint x="1675" y="900" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0rh41r0_di" bpmnElement="Flow_0rh41r0">
+        <di:waypoint x="1510" y="925" />
+        <di:waypoint x="1510" y="1200" />
+        <di:waypoint x="980" y="1200" />
+        <di:waypoint x="980" y="750" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1i51bal_di" bpmnElement="Flow_1i51bal">
+        <di:waypoint x="1370" y="900" />
+        <di:waypoint x="1485" y="900" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fozm3q_di" bpmnElement="Flow_0fozm3q">
+        <di:waypoint x="2310" y="875" />
+        <di:waypoint x="2310" y="710" />
+        <di:waypoint x="1700" y="710" />
+        <di:waypoint x="1700" y="875" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2197" y="726" width="66" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0rwqcwa_di" bpmnElement="Flow_0rwqcwa">
+        <di:waypoint x="2335" y="900" />
+        <di:waypoint x="2470" y="900" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2369" y="873" width="88" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0suje2p_di" bpmnElement="Flow_0suje2p">
+        <di:waypoint x="2230" y="900" />
+        <di:waypoint x="2285" y="900" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_015scwr_di" bpmnElement="Flow_015scwr">
+        <di:waypoint x="1510" y="875" />
+        <di:waypoint x="1510" y="728" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1e562ri_di" bpmnElement="Flow_1e562ri">
+        <di:waypoint x="1700" y="925" />
+        <di:waypoint x="1700" y="1070" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1jlf1u6_di" bpmnElement="Flow_1jlf1u6">
+        <di:waypoint x="1725" y="900" />
+        <di:waypoint x="1890" y="900" />
+        <di:waypoint x="1890" y="1290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1po34iz_di" bpmnElement="Flow_1po34iz">
+        <di:waypoint x="1700" y="1150" />
+        <di:waypoint x="1700" y="1570" />
+        <di:waypoint x="1865" y="1570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10ovxsw_di" bpmnElement="Flow_10ovxsw">
+        <di:waypoint x="1915" y="1570" />
+        <di:waypoint x="2130" y="1570" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

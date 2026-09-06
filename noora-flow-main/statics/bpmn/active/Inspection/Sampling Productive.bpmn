@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_19q500d" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <bpmn:collaboration id="Collaboration_0yvcna6">
+    <bpmn:participant id="Participant_1gddaw0" processRef="ProductiveSampling" />
+  </bpmn:collaboration>
+  <bpmn:process id="ProductiveSampling" name="ثبت نمونه برداری تولیدی" isExecutable="true" camunda:candidateStarterGroups="branch-manager" camunda:historyTimeToLive="180">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property name="displayable" value="true" />
+        <camunda:property name="indicator" value="inspection" />
+        <camunda:property name="documents" value="{&#34;types&#34;:{&#34;documents&#34;:{&#34;title&#34;:&#34;مدارک نمونه برداری&#34;,&#34;extensions&#34;:[&#34;png&#34;,&#34;pdf&#34;,&#34;jpg&#34;,&#34;jpeg&#34;],&#34;multiple&#34;:true},&#34;paymentReceipt&#34;:{&#34;title&#34;:&#34;رسید پرداخت&#34;,&#34;extensions&#34;:[&#34;png&#34;,&#34;pdf&#34;,&#34;jpg&#34;,&#34;jpeg&#34;],&#34;multiple&#34;:false}},&#34;folders&#34;:{&#34;documents&#34;:{&#34;title&#34;:&#34;مدارک نمونه برداری&#34;,&#34;types&#34;:[&#34;documents&#34;]},&#34;paymentReceipt&#34;:{&#34;title&#34;:&#34;رسید پرداخت&#34;,&#34;types&#34;:[&#34;paymentReceipt&#34;]}}}" />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="Event_08ic598">
+      <bpmn:outgoing>Flow_1sqyry2</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="ProductiveSamplingForm" name="ثبت نمونه برداری تولیدی" camunda:assignee="$[owner]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="BranchId" type="string" />
+          <camunda:formField id="BuyerAddress" type="string" />
+          <camunda:formField id="Buyer" type="object" />
+          <camunda:formField id="BuyerId" type="string" />
+          <camunda:formField id="BuyerName" type="string" />
+          <camunda:formField id="Date" type="string" />
+          <camunda:formField id="PageNo" type="string" />
+          <camunda:formField id="Place" type="string" />
+          <camunda:formField id="Price" type="string" />
+          <camunda:formField id="SamplerId" type="string" />
+          <camunda:formField id="SamplerName" type="string" />
+          <camunda:formField id="SamplerSignature" type="string" />
+          <camunda:formField id="SystemBarcode" type="string" />
+          <camunda:formField id="Type" type="string" />
+          <camunda:formField id="CaseType" type="string" />
+          <camunda:formField id="DischargerName" type="string" />
+          <camunda:formField id="DischargerPhoneNo" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1sqyry2</bpmn:incoming>
+      <bpmn:incoming>Flow_1vlpjcs</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ig9jaj</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="InspectorForm" name="بررسی توسط بازرس" camunda:assignee="$[data.SamplerId]">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="data" value="BranchId,BuyerAddress,Buyer,BuyerId,BuyerName,SamplerId,SamplerName,SamplerSignature,CaseType,DischargerName,DischargerPhoneNo" />
+        </camunda:properties>
+        <camunda:formData>
+          <camunda:formField id="Date" type="string" />
+          <camunda:formField id="PageNo" type="string" />
+          <camunda:formField id="Place" type="string" />
+          <camunda:formField id="Price" type="string" />
+          <camunda:formField id="ProductionUnitName" type="string" />
+          <camunda:formField id="InspectorStatus" type="string" />
+          <camunda:formField id="LaboratoryManager" type="string" />
+          <camunda:formField id="ProductiveSignature" type="string" />
+          <camunda:formField id="ProductsData" type="object" />
+          <camunda:formField id="QcName" type="string" />
+          <camunda:formField id="QcSignature" type="string" />
+          <camunda:formField id="SamplingPage" type="string" />
+          <camunda:formField id="SystemBarcode" type="string" />
+          <camunda:formField id="Type" type="string" />
+          <camunda:formField id="DischargerName" type="string" />
+          <camunda:formField id="DischargerPhoneNo" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ig9jaj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0n6op3p</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1sqyry2" sourceRef="Event_08ic598" targetRef="ProductiveSamplingForm" />
+    <bpmn:sequenceFlow id="Flow_1ig9jaj" sourceRef="ProductiveSamplingForm" targetRef="InspectorForm" />
+    <bpmn:sequenceFlow id="Flow_0n6op3p" sourceRef="InspectorForm" targetRef="Gateway_1gaew00" />
+    <bpmn:userTask id="Activity_143tx8h" name="فیلدهای مدیریتی">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="ownerGroup" type="string" />
+          <camunda:formField id="InspectionFeeInRial" type="string" />
+          <camunda:formField id="InvoicePaymentStatus" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1gaew00">
+      <bpmn:incoming>Flow_0n6op3p</bpmn:incoming>
+      <bpmn:outgoing>Flow_1vlpjcs</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0pgelck</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_0hcei7e">
+      <bpmn:incoming>Flow_0pgelck</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1vlpjcs" sourceRef="Gateway_1gaew00" targetRef="ProductiveSamplingForm">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InspectorStatus]==="return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0pgelck" sourceRef="Gateway_1gaew00" targetRef="Event_0hcei7e">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InspectorStatus]==="finish"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0yvcna6">
+      <bpmndi:BPMNShape id="Participant_1gddaw0_di" bpmnElement="Participant_1gddaw0" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1030" height="500" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1l7s7v7" bpmnElement="Event_08ic598">
+        <dc:Bounds x="272" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0e8kxb9_di" bpmnElement="ProductiveSamplingForm">
+        <dc:Bounds x="440" y="250" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1btguc6_di" bpmnElement="InspectorForm">
+        <dc:Bounds x="680" y="250" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_143tx8h_di" bpmnElement="Activity_143tx8h">
+        <dc:Bounds x="280" y="120" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1gaew00_di" bpmnElement="Gateway_1gaew00" isMarkerVisible="true">
+        <dc:Bounds x="835" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0hcei7e_di" bpmnElement="Event_0hcei7e">
+        <dc:Bounds x="942" y="272" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1sqyry2_di" bpmnElement="Flow_1sqyry2">
+        <di:waypoint x="308" y="290" />
+        <di:waypoint x="440" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ig9jaj_di" bpmnElement="Flow_1ig9jaj">
+        <di:waypoint x="540" y="290" />
+        <di:waypoint x="680" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0n6op3p_di" bpmnElement="Flow_0n6op3p">
+        <di:waypoint x="780" y="290" />
+        <di:waypoint x="835" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vlpjcs_di" bpmnElement="Flow_1vlpjcs">
+        <di:waypoint x="860" y="265" />
+        <di:waypoint x="860" y="200" />
+        <di:waypoint x="490" y="200" />
+        <di:waypoint x="490" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pgelck_di" bpmnElement="Flow_0pgelck">
+        <di:waypoint x="885" y="290" />
+        <di:waypoint x="942" y="290" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

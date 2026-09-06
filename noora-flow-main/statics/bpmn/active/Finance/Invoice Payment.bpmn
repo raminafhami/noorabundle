@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1gd94rx" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+  <bpmn:collaboration id="Collaboration_0j62t67">
+    <bpmn:participant id="Participant_13wo35c" processRef="Financial_Invoice_Payment" />
+  </bpmn:collaboration>
+  <bpmn:process id="Financial_Invoice_Payment" name="پرداخت فاکتور" isExecutable="true">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property name="indicator" value="inspection" />
+        <camunda:property name="displayable" value="true" />
+        <camunda:property name="documents" value="{&#34;types&#34;:{&#34;receipt&#34;:{&#34;title&#34;:&#34;رسید پرداخت / PAYMENT RECEIPT&#34;,&#34;extensions&#34;:[&#34;jpg&#34;,&#34;jpeg&#34;,&#34;png&#34;,&#34;pdf&#34;],&#34;multiple&#34;:true}},&#34;folders&#34;:{&#34;receipts&#34;:{&#34;title&#34;:&#34;رسیدهای پرداخت / PAYMENT RECEIPTS&#34;,&#34;types&#34;:[&#34;receipt&#34;]}}}" />
+        <camunda:property name="stateList" value="[{&#34;name&#34;:&#34;information-form&#34;,&#34;title&#34;:&#34;تکمیل اطلاعات&#34;},{&#34;name&#34;:&#34;information-review&#34;,&#34;title&#34;:&#34;بررسی اطلاعات&#34;},{&#34;name&#34;:&#34;completed&#34;,&#34;title&#34;:&#34;تکمیل شده&#34;},{&#34;name&#34;:&#34;canceled&#34;,&#34;title&#34;:&#34;لغو شده&#34;}]" />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_0zom57c">
+      <bpmn:lane id="Lane_09rwv1q" name="درخواست دهنده">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InformationForm</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_059laoo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0gfalzn</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1071au0" name="حسابدار">
+        <bpmn:flowNodeRef>InformationReview</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_11qvpkn</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1bgp8wu</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InformationViewByAccountant</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0cicxd9</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0cicxd9" sourceRef="StartEvent_1" targetRef="InformationForm" />
+    <bpmn:userTask id="InformationForm" name="تکمیل اطلاعات" camunda:assignee="$[owner]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="CancellationNote" type="string" />
+          <camunda:formField id="InformationFormStatus" type="string" />
+          <camunda:formField id="InformationFormNote" type="string" />
+          <camunda:formField id="InvoiceItems" type="object" />
+          <camunda:formField id="PaymentType" type="string" />
+          <camunda:formField id="BankAccount" type="string" />
+          <camunda:formField id="ReceiptNo" type="string" />
+          <camunda:formField id="ForeignAccount" type="string" />
+          <camunda:formField id="PaymentAmount" type="string" />
+          <camunda:formField id="PaymentDate" type="string" />
+          <camunda:formField id="VoucherNo" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0cicxd9</bpmn:incoming>
+      <bpmn:incoming>Flow_1hk9v2u</bpmn:incoming>
+      <bpmn:outgoing>Flow_10p3yyh</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_10p3yyh" sourceRef="InformationForm" targetRef="Gateway_059laoo" />
+    <bpmn:sequenceFlow id="Flow_1hk9v2u" name="بازگشت" sourceRef="Gateway_11qvpkn" targetRef="InformationForm">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationReviewStatus] === "return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_059laoo">
+      <bpmn:incoming>Flow_10p3yyh</bpmn:incoming>
+      <bpmn:outgoing>Flow_05acuho</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0kjtv9p</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_05acuho" name="ارسال برای مالی" sourceRef="Gateway_059laoo" targetRef="InformationReview">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationFormStatus] === "forward"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0kjtv9p" name="ثبت سند خودکار" sourceRef="Gateway_059laoo" targetRef="Event_0gfalzn">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationFormStatus] === "auto-document"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="InformationReview" name="بررسی اطلاعات" camunda:assignee="$[data.Assignees.accountant.id]" camunda:candidateGroups="financial-assistant">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="InformationReviewStatus" type="string" />
+          <camunda:formField id="InformationReviewNote" type="string" />
+          <camunda:formField id="VoucherNo" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees,InvoiceItems,PaymentType,BankAccount,ReceiptNo,ForeignAccount,PaymentAmount,PaymentDate" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_05acuho</bpmn:incoming>
+      <bpmn:outgoing>Flow_17itgzx</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_11qvpkn" name="تایید">
+      <bpmn:incoming>Flow_17itgzx</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hk9v2u</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1bv1g2d</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_1bgp8wu">
+      <bpmn:incoming>Flow_1fr1nh5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="InformationViewByAccountant" name="مشاهده اطلاعات (حسابدار)" camunda:assignee="$[data.Assignees.accountant.id]">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees,InformationFormNote,InformationReviewStatus,InformationReviewNote,InvoiceItems,PaymentType,BankAccount,ReceiptNo,ForeignAccount,PaymentAmount,PaymentDate,VoucherNo" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1bv1g2d</bpmn:incoming>
+      <bpmn:outgoing>Flow_1fr1nh5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_17itgzx" sourceRef="InformationReview" targetRef="Gateway_11qvpkn" />
+    <bpmn:sequenceFlow id="Flow_1bv1g2d" sourceRef="Gateway_11qvpkn" targetRef="InformationViewByAccountant">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationReviewStatus] === "forward"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1fr1nh5" sourceRef="InformationViewByAccountant" targetRef="Event_1bgp8wu" />
+    <bpmn:endEvent id="Event_0gfalzn">
+      <bpmn:incoming>Flow_0kjtv9p</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0j62t67">
+      <bpmndi:BPMNShape id="Participant_13wo35c_di" bpmnElement="Participant_13wo35c" isHorizontal="true">
+        <dc:Bounds x="129" y="70" width="1271" height="500" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1071au0_di" bpmnElement="Lane_1071au0" isHorizontal="true">
+        <dc:Bounds x="159" y="330" width="1241" height="240" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_09rwv1q_di" bpmnElement="Lane_09rwv1q" isHorizontal="true">
+        <dc:Bounds x="159" y="70" width="1241" height="260" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="242" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1axi62g_di" bpmnElement="InformationForm">
+        <dc:Bounds x="390" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_059laoo_di" bpmnElement="Gateway_059laoo" isMarkerVisible="true">
+        <dc:Bounds x="575" y="175" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1932k86_di" bpmnElement="InformationReview">
+        <dc:Bounds x="710" y="410" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_11qvpkn_di" bpmnElement="Gateway_11qvpkn" isMarkerVisible="true">
+        <dc:Bounds x="915" y="425" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="972" y="423" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1bgp8wu_di" bpmnElement="Event_1bgp8wu">
+        <dc:Bounds x="1272" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j346un_di" bpmnElement="InformationViewByAccountant">
+        <dc:Bounds x="1070" y="410" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0gfalzn_di" bpmnElement="Event_0gfalzn">
+        <dc:Bounds x="722" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0cicxd9_di" bpmnElement="Flow_0cicxd9">
+        <di:waypoint x="278" y="200" />
+        <di:waypoint x="390" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10p3yyh_di" bpmnElement="Flow_10p3yyh">
+        <di:waypoint x="490" y="200" />
+        <di:waypoint x="575" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hk9v2u_di" bpmnElement="Flow_1hk9v2u">
+        <di:waypoint x="940" y="425" />
+        <di:waypoint x="940" y="370" />
+        <di:waypoint x="440" y="370" />
+        <di:waypoint x="440" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="885" y="403" width="29" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05acuho_di" bpmnElement="Flow_05acuho">
+        <di:waypoint x="600" y="225" />
+        <di:waypoint x="600" y="450" />
+        <di:waypoint x="710" y="450" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="529" y="233" width="61" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kjtv9p_di" bpmnElement="Flow_0kjtv9p">
+        <di:waypoint x="625" y="200" />
+        <di:waypoint x="722" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="629" y="175" width="59" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17itgzx_di" bpmnElement="Flow_17itgzx">
+        <di:waypoint x="810" y="450" />
+        <di:waypoint x="915" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bv1g2d_di" bpmnElement="Flow_1bv1g2d">
+        <di:waypoint x="965" y="450" />
+        <di:waypoint x="1070" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1fr1nh5_di" bpmnElement="Flow_1fr1nh5">
+        <di:waypoint x="1170" y="450" />
+        <di:waypoint x="1272" y="450" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

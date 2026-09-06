@@ -15,7 +15,7 @@ function BuyerInfoDisplay() {
 		<CardContent className="grid grid-cols-12 gap-6">
 			<div className="col-span-full col-start-1 space-y-2">
 				<div className="text-muted-foreground">نوع:</div>
-				<div>{buyerType[buyer.type].title}</div>
+				<div>{buyerType[buyer.type]?.title ?? buyer.type ?? "-"}</div>
 			</div>
 
 			<Separator className="col-span-full" />

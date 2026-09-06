@@ -42,7 +42,7 @@ function BuyersTableRow({ buyer, index }: { buyer: Buyer; index: number }) {
 					)}
 				</DynamicLink>
 			</TableCell>
-			<TableCell>{buyerType[buyer.type].title}</TableCell>
+			<TableCell>{buyerType[buyer.type]?.title ?? buyer.type ?? "-"}</TableCell>
 			<TableCell className="tracking-wide">
 				{buyer.nationalCode || "-"}
 			</TableCell>

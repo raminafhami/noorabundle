@@ -42,6 +42,10 @@ function CustomersPage() {
 
 	const queryFn = useCallback(
 		async (page: number, pageSize: number) => {
+			if (!identity) {
+				return [[], 0] as [UserAndRelations[], number];
+			}
+
 			let filters: Partial<UserQueryFilter> = {
 				type: UserType.Public,
 			};

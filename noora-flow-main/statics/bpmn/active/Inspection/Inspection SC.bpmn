@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_045agdw" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <bpmn:collaboration id="Collaboration_1jnck8n">
+    <bpmn:participant id="Participant_0mowiqh" processRef="Inspection_Case_SC" />
+  </bpmn:collaboration>
+  <bpmn:process id="Inspection_Case_SC" name="قرارداد نظارت" isExecutable="true" camunda:candidateStarterGroups="ic-expert" camunda:historyTimeToLive="180">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property name="displayable" value="true" />
+        <camunda:property name="documents" value="{&#34;types&#34;:{&#34;contract&#34;:{&#34;title&#34;:&#34;قرارداد بازرسی / CONTRACT&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;proforma&#34;:{&#34;title&#34;:&#34;پروفرما / PROFORMA INVOICE&#34;,&#34;extensions&#34;:[&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;invoice&#34;:{&#34;title&#34;:&#34;اینویس / COMMERCIAL INVOICE&#34;,&#34;extensions&#34;:[&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;packing_list&#34;:{&#34;title&#34;:&#34;پکینگ لیست / PACKING LIST&#34;,&#34;extensions&#34;:[&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;bill_of_lading&#34;:{&#34;title&#34;:&#34;بارنامه / ORIGINAL (MBL/HBL)&#34;,&#34;extensions&#34;:[&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;certificate_of_origin&#34;:{&#34;title&#34;:&#34;گواهی مبدا / CERTIFICATE OF ORIGIN&#34;,&#34;extensions&#34;:[&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;registration_order&#34;:{&#34;title&#34;:&#34;ثبت سفارش / REGISTRATION ORDER&#34;,&#34;extensions&#34;:[&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;delivery_order&#34;:{&#34;title&#34;:&#34;اعلامیه ورود / DELIVERY ORDERS&#34;,&#34;extensions&#34;:[&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;warehouse_receipt&#34;:{&#34;title&#34;:&#34;قبض انبار / WAREHOUSE RECEIPT&#34;,&#34;extensions&#34;:[&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;inspection_pic&#34;:{&#34;title&#34;:&#34;عکس بازرسی / INSPECTION PIC&#34;,&#34;extensions&#34;:[&#34;jpg&#34;,&#34;jpeg&#34;,&#34;png&#34;,&#34;pdf&#34;,&#34;zip&#34;,&#34;rar&#34;],&#34;multiple&#34;:true},&#34;inspection_video&#34;:{&#34;title&#34;:&#34;ویدئو بازرسی / INSPECTION VIDEO&#34;,&#34;extensions&#34;:[&#34;mp4&#34;,&#34;zip&#34;,&#34;rar&#34;],&#34;multiple&#34;:true},&#34;inspection_certificate&#34;:{&#34;title&#34;:&#34;گواهی بازرسی / INSPECTION CERTIFICATE&#34;,&#34;extensions&#34;:[&#34;pdf&#34;],&#34;multiple&#34;:false},&#34;misc&#34;:{&#34;title&#34;:&#34;سایر&#34;,&#34;extensions&#34;:[&#34;jpg&#34;,&#34;jpeg&#34;,&#34;png&#34;,&#34;doc&#34;,&#34;docx&#34;,&#34;pdf&#34;,&#34;zip&#34;,&#34;rar&#34;],&#34;multiple&#34;:true}},&#34;folders&#34;:{&#34;contract&#34;:{&#34;title&#34;:&#34;قرارداد / CONTRACT&#34;,&#34;types&#34;:[&#34;contract&#34;]},&#34;docs&#34;:{&#34;title&#34;:&#34;اسناد / DOCS&#34;,&#34;types&#34;:[&#34;proforma&#34;,&#34;invoice&#34;,&#34;packing_list&#34;,&#34;bill_of_lading&#34;,&#34;certificate_of_origin&#34;,&#34;registration_order&#34;,&#34;delivery_order&#34;,&#34;warehouse_receipt&#34;,&#34;misc&#34;]},&#34;pic&#34;:{&#34;title&#34;:&#34;عکس ها / PICS&#34;,&#34;types&#34;:[&#34;inspection_pic&#34;,&#34;inspection_video&#34;]},&#34;scanned_docs&#34;:{&#34;title&#34;:&#34;اسناد اسکن شده / SCANNED DOCS&#34;,&#34;types&#34;:[&#34;inspection_certificate&#34;,&#34;misc&#34;]}}}" />
+        <camunda:property name="indicator" value="inspection" />
+        <camunda:property name="stateList" value="[{&#34;name&#34;:&#34;information-filling&#34;,&#34;title&#34;:&#34;تکمیل اطلاعات&#34;},{&#34;name&#34;:&#34;information-review&#34;,&#34;title&#34;:&#34;بررسی اطلاعات&#34;},{&#34;name&#34;:&#34;inspection&#34;,&#34;title&#34;:&#34;اجرای فرایند بازرسی&#34;},{&#34;name&#34;:&#34;report-filling&#34;,&#34;title&#34;:&#34;تکمیل گزارش بازرسی&#34;},{&#34;name&#34;:&#34;report-issued&#34;,&#34;title&#34;:&#34;گزارش صادر شده&#34;}]" />
+        <camunda:property name="useCN" value="true" />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_04mo1tn">
+      <bpmn:lane id="Lane_16mrsxw" name="Expert">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InformationForm</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0eslj3w</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ReportForm</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1rkrmpo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InitialForm</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_15799oh" name="Manager">
+        <bpmn:flowNodeRef>InformationIntersection</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InformationReview</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1gzp02n</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1gzp02n" sourceRef="StartEvent_1" targetRef="InitialForm" />
+    <bpmn:userTask id="InformationForm" name="تکمیل اطلاعات" camunda:assignee="$[owner]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="AuthorityOrganization" type="string" />
+          <camunda:formField id="AuthorityPerson" type="string" />
+          <camunda:formField id="Branch" type="object" />
+          <camunda:formField id="Buyer" type="object" />
+          <camunda:formField id="CaseOperationDescription" type="string" />
+          <camunda:formField id="CaseOperationSummary" type="string" />
+          <camunda:formField id="ContractAttachmentStatus" type="string" />
+          <camunda:formField id="ContractDuration" type="string" />
+          <camunda:formField id="ContractEmployerObligations" type="object" />
+          <camunda:formField id="ContractEndDate" type="string" />
+          <camunda:formField id="ContractInspectorObligations" type="object" />
+          <camunda:formField id="ContractObligationsFulfillmentArticle" type="string" />
+          <camunda:formField id="ContractObligationsFulfillmentClauses" type="object" />
+          <camunda:formField id="ContractStartDate" type="string" />
+          <camunda:formField id="ContractSubject" type="string" />
+          <camunda:formField id="ContractSubjectArticle" type="string" />
+          <camunda:formField id="CottageNo" type="string" />
+          <camunda:formField id="GoodsDescriptions" type="object" />
+          <camunda:formField id="GoodsField" type="string" />
+          <camunda:formField id="GoodsQuantity" type="string" />
+          <camunda:formField id="GoodsQuantityUnit" type="string" />
+          <camunda:formField id="InformationFormNote" type="string" />
+          <camunda:formField id="InspectionPlace" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,InformationReviewNote,InformationReviewStatus,CaseType,InvoicePaymentStatus" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>InformationIntersectionReturn</bpmn:incoming>
+      <bpmn:incoming>Flow_0k1wwwk</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gsj0n2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="InformationIntersectionReturn" name="بازگشت" sourceRef="InformationIntersection" targetRef="InformationForm">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationReviewStatus] === "return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1gsj0n2" sourceRef="InformationForm" targetRef="InformationReview" />
+    <bpmn:exclusiveGateway id="InformationIntersection">
+      <bpmn:incoming>Flow_0qthweb</bpmn:incoming>
+      <bpmn:outgoing>InformationIntersectionReturn</bpmn:outgoing>
+      <bpmn:outgoing>InformationIntersectionConfirm</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="InformationReview" name="بررسی اطلاعات" camunda:assignee="$[data.Assignees.manager.id]" camunda:candidateUsers="09126795247">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="ContractIssueDate" type="string" />
+          <camunda:formField id="ContractIssueNo" type="string" />
+          <camunda:formField id="InformationReviewStatus" type="string" />
+          <camunda:formField id="InformationReviewNote" type="string" />
+          <camunda:formField id="InspectionInstanceId" type="string" />
+          <camunda:formField id="InspectionCaseNo" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,Branch,AuthorityOrganization,AuthorityPerson,Buyer,CaseOperationDescription,CaseOperationSummary,CaseType,ContractAttachmentStatus,ContractDuration,ContractEmployerObligations,ContractEndDate,ContractInspectorObligations,ContractObligationsFulfillmentClauses,ContractObligationsFulfillmentArticle,ContractStartDate,ContractSubject,ContractSubjectArticle,CottageNo,GoodsDescriptions,GoodsField,GoodsQuantity,GoodsQuantityUnit,InformationFormNote,InspectionPlace" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gsj0n2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qthweb</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0eslj3w">
+      <bpmn:incoming>Flow_13vh6ju</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="ReportForm" name="تکمیل گزارش" camunda:assignee="$[data.Assignees.expert.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="InspectionDate" type="string" />
+          <camunda:formField id="ReportDescription" type="string" />
+          <camunda:formField id="ReportIssueDate" type="string" />
+          <camunda:formField id="ReportIssueNo" type="string" />
+          <camunda:formField id="ReportSubject" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,AuthorityOrganization,AuthorityPerson,Buyer,CaseOperationDescription,CaseOperationSummary,CaseType,ContractIssueNo,ContractIssueDate,CottageNo,GoodsDescriptions,GoodsQuantity,GoodsQuantityUnit,InformationReviewNote,InspectionPlace" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>InformationIntersectionConfirm</bpmn:incoming>
+      <bpmn:outgoing>Flow_13vh6ju</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0qthweb" sourceRef="InformationReview" targetRef="InformationIntersection" />
+    <bpmn:sequenceFlow id="InformationIntersectionConfirm" name="تایید" sourceRef="InformationIntersection" targetRef="ReportForm">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.InformationReviewStatus] === "confirm"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_13vh6ju" sourceRef="ReportForm" targetRef="Event_0eslj3w" />
+    <bpmn:userTask id="Activity_1rkrmpo" name="فیلدهای مدیریتی">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="ownerGroup" type="string" />
+          <camunda:formField id="InspectionFeeInRial" type="string" />
+          <camunda:formField id="InvoicePaymentStatus" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0k1wwwk" sourceRef="InitialForm" targetRef="InformationForm" />
+    <bpmn:userTask id="InitialForm" name="ثبت اطلاعات اولیه" camunda:assignee="$[owner]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="CaseType" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gzp02n</bpmn:incoming>
+      <bpmn:outgoing>Flow_0k1wwwk</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1jnck8n">
+      <bpmndi:BPMNShape id="Participant_0mowiqh_di" bpmnElement="Participant_0mowiqh" isHorizontal="true">
+        <dc:Bounds x="170" y="40" width="1518" height="580" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_15799oh_di" bpmnElement="Lane_15799oh" isHorizontal="true">
+        <dc:Bounds x="200" y="329" width="1488" height="291" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_16mrsxw_di" bpmnElement="Lane_16mrsxw" isHorizontal="true">
+        <dc:Bounds x="200" y="40" width="1488" height="289" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="312" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_11ipyb3_di" bpmnElement="InformationForm">
+        <dc:Bounds x="657" y="150" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_09c8b02_di" bpmnElement="InformationIntersection" isMarkerVisible="true">
+        <dc:Bounds x="1139" y="445" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="729" y="443" width="82" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1vw7tx5_di" bpmnElement="InformationReview">
+        <dc:Bounds x="934" y="430" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0eslj3w_di" bpmnElement="Event_0eslj3w">
+        <dc:Bounds x="1586" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13y8uwe_di" bpmnElement="ReportForm">
+        <dc:Bounds x="1404" y="150" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1t0b3o3_di" bpmnElement="Activity_1rkrmpo">
+        <dc:Bounds x="210" y="50" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1uw6b31_di" bpmnElement="InitialForm">
+        <dc:Bounds x="450" y="150" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1gzp02n_di" bpmnElement="Flow_1gzp02n">
+        <di:waypoint x="348" y="190" />
+        <di:waypoint x="450" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0y3nuqv_di" bpmnElement="InformationIntersectionReturn">
+        <di:waypoint x="1164" y="445" />
+        <di:waypoint x="1164" y="380" />
+        <di:waypoint x="707" y="380" />
+        <di:waypoint x="707" y="230" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1115" y="434" width="29" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gsj0n2_di" bpmnElement="Flow_1gsj0n2">
+        <di:waypoint x="757" y="190" />
+        <di:waypoint x="850" y="190" />
+        <di:waypoint x="850" y="470" />
+        <di:waypoint x="934" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qthweb_di" bpmnElement="Flow_0qthweb">
+        <di:waypoint x="1034" y="470" />
+        <di:waypoint x="1139" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0lqci53_di" bpmnElement="InformationIntersectionConfirm">
+        <di:waypoint x="1189" y="470" />
+        <di:waypoint x="1314" y="470" />
+        <di:waypoint x="1314" y="190" />
+        <di:waypoint x="1404" y="190" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1202" y="443" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13vh6ju_di" bpmnElement="Flow_13vh6ju">
+        <di:waypoint x="1504" y="190" />
+        <di:waypoint x="1586" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k1wwwk_di" bpmnElement="Flow_0k1wwwk">
+        <di:waypoint x="550" y="190" />
+        <di:waypoint x="657" y="190" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

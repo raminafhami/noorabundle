@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0rd1gpo" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <bpmn:collaboration id="Collaboration_0dwinsj">
+    <bpmn:participant id="paymentOrderParticipant" name="دستور پرداخت" processRef="paymentOrder" />
+  </bpmn:collaboration>
+  <bpmn:process id="paymentOrder" name="دستور پرداخت" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property name="stateList" value="[{&#34;name&#34;:&#34;paymentOrder-request&#34;,&#34;title&#34;:&#34;درخواست پرداخت&#34;},{&#34;name&#34;:&#34;paymentOrder-review&#34;,&#34;title&#34;:&#34;در دست بررسی&#34;},{&#34;name&#34;:&#34;paymentOrder-pay&#34;,&#34;title&#34;:&#34;در دست پرداخت&#34;},{&#34;name&#34;:&#34;paymentOrder-cancel&#34;,&#34;title&#34;:&#34;لغو شده&#34;},{&#34;name&#34;:&#34;paymentOrder-paid&#34;,&#34;title&#34;:&#34;پرداخت شده&#34;}]" />
+        <camunda:property name="documents" value="{&#34;types&#34;:{&#34;requestReceipt&#34;:{&#34;title&#34;:&#34;فاکتور / PAYMENTORDER&#34;,&#34;extensions&#34;:[&#34;png&#34;,&#34;pdf&#34;,&#34;jpg&#34;,&#34;jpeg&#34;],&#34;multiple&#34;:true},&#34;payReceipt&#34;:{&#34;title&#34;:&#34;رسید پرداخت / PAYMENTORDER&#34;,&#34;extensions&#34;:[&#34;png&#34;,&#34;pdf&#34;,&#34;jpg&#34;,&#34;jpeg&#34;],&#34;multiple&#34;:true}},&#34;folders&#34;:{&#34;paymentOrder&#34;:{&#34;title&#34;:&#34;رسید / PAYMENTORDER&#34;,&#34;types&#34;:[&#34;requestReceipt&#34;,&#34;payReceipt&#34;]}}}" />
+        <camunda:property name="indicator" value="payment-order" />
+        <camunda:property name="displayable" value="true" />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_1kwptjv">
+      <bpmn:lane id="conditions" name="شرط ها">
+        <bpmn:flowNodeRef>Gateway_1vmo6i5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0548wy5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0uvh36z</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>isAccept</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_03920n9</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_181ps95</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1f9cbij</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1jerxdb</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="ceo" name="مدیر">
+        <bpmn:flowNodeRef>PaymentOrderReview</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="client" name="کلاینت">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>PaymentOrderRequest</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_0qaz22t</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>PaymentOrderCompletion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0tkajjn</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1owwk8x" name="مالی">
+        <bpmn:flowNodeRef>PaymentOrderPay</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>PaymentOrderDoc</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0t4cx81</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="PaymentOrderRequest" name="درخواست پرداخت" camunda:assignee="$[owner]" camunda:priority="$[data.Priority]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Amount" label="مقدار" type="string">
+            <camunda:properties />
+            <camunda:validation />
+          </camunda:formField>
+          <camunda:formField id="Title" label="عنوان" type="string" />
+          <camunda:formField id="Description" label="توضیحات" type="string" />
+          <camunda:formField id="PaymentDate" label="تاریخ پرداخت" type="string" />
+          <camunda:formField id="Priority" label="الویت" type="string" />
+          <camunda:formField id="Sheba" label="شماره شبا" type="string" />
+          <camunda:formField id="BankAccountNumber" label="شماره حساب" type="string" />
+          <camunda:formField id="BankCardNumber" label="شماره کارت" type="string" />
+          <camunda:formField id="UserData" label="اطلاعات درخواست دهنده" type="string" />
+          <camunda:formField id="BankAccountsOwner" label="صاحب حساب" type="string" />
+          <camunda:formField id="InputType" type="string" />
+          <camunda:formField id="CashPay" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Amount,BankAccountNumber,BankAccountsOwner,BankCardNumber,CostsIds,Currency,Description,IsCancel,PaidAmount,PayDes,PaymentDate,Priority,ProcessType,RemainingAmount,ReviewDes,Sheba,State,Title,UserData,UserInformation,ExpertState,InputType,CashPay" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0t4cx81</bpmn:incoming>
+      <bpmn:incoming>Flow_0si8cis</bpmn:incoming>
+      <bpmn:incoming>Flow_09ksih8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ukzkh3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1vmo6i5">
+      <bpmn:incoming>Flow_0hzaqy8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wml27s</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0gbtnf7</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="PaymentOrderReview" name="تایید پرداخت" camunda:candidateGroups="ceo" camunda:priority="$[data.Priority]">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="data" value="Amount,BankAccountNumber,BankAccountsOwner,BankCardNumber,CostsIds,Currency,Description,IsCancel,PaidAmount,PayDes,PaymentDate,Priority,ProcessType,RemainingAmount,ReviewDes,Sheba,State,Title,UserData,UserInformation,ExpertState,InputType,CashPay" />
+        </camunda:properties>
+        <camunda:formData>
+          <camunda:formField id="State" label="وضعیت" type="string" />
+          <camunda:formField id="ReviewDes" label="توضیحات مدیر" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0wml27s</bpmn:incoming>
+      <bpmn:incoming>Flow_03jo580</bpmn:incoming>
+      <bpmn:outgoing>Flow_1g3o60r</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_0qaz22t" name="فیلد های اضافه">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="UserInformation" type="object" />
+          <camunda:formField id="PaidAmount" type="object" />
+          <camunda:formField id="Currency" type="string" />
+          <camunda:formField id="CostsIds" type="object" />
+          <camunda:formField id="IsCancel" type="object" />
+          <camunda:formField id="RemainingAmount" type="string" />
+          <camunda:formField id="ProcessType" type="string" />
+          <camunda:formField id="InputType" type="string" />
+          <camunda:formField id="AmountInRial" type="string" />
+          <camunda:formField id="RemainingAmountInRial" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0548wy5">
+      <bpmn:incoming>Flow_0ukzkh3</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hzaqy8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0qela49</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_0uvh36z">
+      <bpmn:incoming>Flow_0qela49</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="isAccept">
+      <bpmn:incoming>Flow_0lyyja2</bpmn:incoming>
+      <bpmn:outgoing>Flow_04aiysr</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0si8cis</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="PaymentOrderPay" name="پرداخت" camunda:candidateGroups="financial-expert" camunda:priority="$[data.Priority]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PayDes" label="توضیحات مالی" type="string" />
+          <camunda:formField id="ExpertState" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Amount,BankAccountNumber,BankAccountsOwner,BankCardNumber,CostsIds,Currency,Description,IsCancel,PaidAmount,PayDes,PaymentDate,Priority,ProcessType,RemainingAmount,ReviewDes,Sheba,State,Title,UserData,UserInformation,ExpertState,InputType,AmountInRial,RemainingAmountInRial,CashPay" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_04aiysr</bpmn:incoming>
+      <bpmn:incoming>Flow_0gbtnf7</bpmn:incoming>
+      <bpmn:incoming>Flow_08ov38x</bpmn:incoming>
+      <bpmn:outgoing>Flow_1elsy1s</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_03920n9">
+      <bpmn:incoming>Flow_1g3o60r</bpmn:incoming>
+      <bpmn:outgoing>Flow_0a7wgp0</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0lyyja2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_181ps95">
+      <bpmn:incoming>Flow_0a7wgp0</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0t4cx81" sourceRef="StartEvent_1" targetRef="PaymentOrderRequest" />
+    <bpmn:sequenceFlow id="Flow_0si8cis" sourceRef="isAccept" targetRef="PaymentOrderRequest">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.State]=='reject'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_09ksih8" sourceRef="Gateway_1f9cbij" targetRef="PaymentOrderRequest">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ExpertState]=='requestMaker'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0ukzkh3" sourceRef="PaymentOrderRequest" targetRef="Gateway_0548wy5" />
+    <bpmn:sequenceFlow id="Flow_04bkpif" sourceRef="PaymentOrderCompletion" targetRef="Event_0tkajjn" />
+    <bpmn:sequenceFlow id="Flow_0lsz1pf" sourceRef="PaymentOrderDoc" targetRef="PaymentOrderCompletion" />
+    <bpmn:sequenceFlow id="Flow_0vd2wk7" sourceRef="Gateway_1f9cbij" targetRef="Gateway_1jerxdb">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ExpertState]=='nextStep'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_03jo580" sourceRef="Gateway_1f9cbij" targetRef="PaymentOrderReview">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ExpertState]=='manager'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0hzaqy8" sourceRef="Gateway_0548wy5" targetRef="Gateway_1vmo6i5">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IsCancel]=='false'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0wml27s" sourceRef="Gateway_1vmo6i5" targetRef="PaymentOrderReview">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.Currency] !== 'rial' || (Number($[data.Amount]) &gt; 30000000 &amp;&amp; $[data.Currency] === 'rial') || $[data.ProcessType] === 'beneficiary'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0gbtnf7" sourceRef="Gateway_1vmo6i5" targetRef="PaymentOrderPay">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Number($[data.Amount]) &lt;= 30000000 &amp;&amp; $[data.Currency] === 'rial' &amp;&amp; $[data.ProcessType] !== 'beneficiary'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1g3o60r" sourceRef="PaymentOrderReview" targetRef="Gateway_03920n9" />
+    <bpmn:sequenceFlow id="Flow_0qela49" sourceRef="Gateway_0548wy5" targetRef="Event_0uvh36z">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IsCancel]=='true'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0lyyja2" sourceRef="Gateway_03920n9" targetRef="isAccept">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IsCancel]=='false'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_04aiysr" sourceRef="isAccept" targetRef="PaymentOrderPay">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.State]=='accept'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0a7wgp0" sourceRef="Gateway_03920n9" targetRef="Event_181ps95">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IsCancel]=='true'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1f9cbij">
+      <bpmn:incoming>Flow_1elsy1s</bpmn:incoming>
+      <bpmn:outgoing>Flow_03jo580</bpmn:outgoing>
+      <bpmn:outgoing>Flow_09ksih8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0vd2wk7</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1elsy1s" sourceRef="PaymentOrderPay" targetRef="Gateway_1f9cbij" />
+    <bpmn:userTask id="PaymentOrderDoc" name="ثبت سند" camunda:candidateGroups="financial-assistant" camunda:priority="$[data.Priority]">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="data" value="Amount,BankAccountNumber,BankAccountsOwner,BankCardNumber,CostsIds,Currency,Description,IsCancel,PaidAmount,PayDes,PaymentDate,Priority,ProcessType,RemainingAmount,ReviewDes,Sheba,State,Title,UserData,UserInformation,ExpertState,InputType,AmountInRial,CashPay" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1yeli4o</bpmn:incoming>
+      <bpmn:outgoing>Flow_0lsz1pf</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="PaymentOrderCompletion" name="پرداخت شده" camunda:assignee="$[owner]" camunda:priority="$[data.Priority]">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="data" value="Amount,BankAccountNumber,BankAccountsOwner,BankCardNumber,CostsIds,Currency,Description,IsCancel,PaidAmount,PayDes,PaymentDate,Priority,ProcessType,RemainingAmount,ReviewDes,Sheba,State,Title,UserData,UserInformation,ExpertState,CashPay" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0lsz1pf</bpmn:incoming>
+      <bpmn:outgoing>Flow_04bkpif</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0tkajjn">
+      <bpmn:incoming>Flow_04bkpif</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_1jerxdb">
+      <bpmn:incoming>Flow_0vd2wk7</bpmn:incoming>
+      <bpmn:outgoing>Flow_1yeli4o</bpmn:outgoing>
+      <bpmn:outgoing>Flow_08ov38x</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1yeli4o" sourceRef="Gateway_1jerxdb" targetRef="PaymentOrderDoc">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.RemainingAmount]=='0'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_08ov38x" sourceRef="Gateway_1jerxdb" targetRef="PaymentOrderPay">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.RemainingAmount]!=='0'</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0dwinsj">
+      <bpmndi:BPMNShape id="Participant_0gjix8u_di" bpmnElement="paymentOrderParticipant" isHorizontal="true">
+        <dc:Bounds x="129" y="80" width="1631" height="1310" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1owwk8x_di" bpmnElement="Lane_1owwk8x" isHorizontal="true">
+        <dc:Bounds x="159" y="1070" width="1601" height="320" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0oc0shl_di" bpmnElement="client" isHorizontal="true">
+        <dc:Bounds x="159" y="80" width="1601" height="312" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0jbumwn_di" bpmnElement="ceo" isHorizontal="true">
+        <dc:Bounds x="159" y="392" width="1601" height="218" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1jtnxof_di" bpmnElement="conditions" isHorizontal="true">
+        <dc:Bounds x="159" y="610" width="1601" height="460" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="222" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0rvrjgq_di" bpmnElement="PaymentOrderRequest">
+        <dc:Bounds x="590" y="280" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1vmo6i5_di" bpmnElement="Gateway_1vmo6i5" isMarkerVisible="true">
+        <dc:Bounds x="475" y="785" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0nbdw8i_di" bpmnElement="PaymentOrderReview">
+        <dc:Bounds x="670" y="460" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0iied6u_di" bpmnElement="Activity_0qaz22t">
+        <dc:Bounds x="260" y="120" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0548wy5_di" bpmnElement="Gateway_0548wy5" isMarkerVisible="true">
+        <dc:Bounds x="715" y="785" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0uvh36z_di" bpmnElement="Event_0uvh36z">
+        <dc:Bounds x="722" y="882" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_037l35l_di" bpmnElement="isAccept" isMarkerVisible="true">
+        <dc:Bounds x="985" y="785" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_08ojpyx_di" bpmnElement="PaymentOrderPay">
+        <dc:Bounds x="960" y="1250" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_03920n9_di" bpmnElement="Gateway_03920n9" isMarkerVisible="true">
+        <dc:Bounds x="845" y="785" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_181ps95_di" bpmnElement="Event_181ps95">
+        <dc:Bounds x="852" y="882" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1f9cbij_di" bpmnElement="Gateway_1f9cbij" isMarkerVisible="true">
+        <dc:Bounds x="1305" y="785" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0jxk0i8_di" bpmnElement="PaymentOrderDoc">
+        <dc:Bounds x="1460" y="1230" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1gxugnj_di" bpmnElement="PaymentOrderCompletion">
+        <dc:Bounds x="1460" y="280" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0tkajjn_di" bpmnElement="Event_0tkajjn">
+        <dc:Bounds x="1682" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1jerxdb_di" bpmnElement="Gateway_1jerxdb" isMarkerVisible="true">
+        <dc:Bounds x="1425" y="785" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0t4cx81_di" bpmnElement="Flow_0t4cx81">
+        <di:waypoint x="258" y="320" />
+        <di:waypoint x="590" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0si8cis_di" bpmnElement="Flow_0si8cis">
+        <di:waypoint x="1010" y="785" />
+        <di:waypoint x="1010" y="320" />
+        <di:waypoint x="690" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09ksih8_di" bpmnElement="Flow_09ksih8">
+        <di:waypoint x="1330" y="785" />
+        <di:waypoint x="1330" y="300" />
+        <di:waypoint x="690" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ukzkh3_di" bpmnElement="Flow_0ukzkh3">
+        <di:waypoint x="590" y="340" />
+        <di:waypoint x="360" y="340" />
+        <di:waypoint x="360" y="670" />
+        <di:waypoint x="740" y="670" />
+        <di:waypoint x="740" y="785" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04bkpif_di" bpmnElement="Flow_04bkpif">
+        <di:waypoint x="1560" y="320" />
+        <di:waypoint x="1682" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0lsz1pf_di" bpmnElement="Flow_0lsz1pf">
+        <di:waypoint x="1550" y="1230" />
+        <di:waypoint x="1550" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vd2wk7_di" bpmnElement="Flow_0vd2wk7">
+        <di:waypoint x="1335" y="790" />
+        <di:waypoint x="1445" y="790" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03jo580_di" bpmnElement="Flow_03jo580">
+        <di:waypoint x="1305" y="810" />
+        <di:waypoint x="1110" y="810" />
+        <di:waypoint x="1110" y="480" />
+        <di:waypoint x="770" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hzaqy8_di" bpmnElement="Flow_0hzaqy8">
+        <di:waypoint x="715" y="810" />
+        <di:waypoint x="525" y="810" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wml27s_di" bpmnElement="Flow_0wml27s">
+        <di:waypoint x="500" y="785" />
+        <di:waypoint x="500" y="500" />
+        <di:waypoint x="670" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gbtnf7_di" bpmnElement="Flow_0gbtnf7">
+        <di:waypoint x="500" y="835" />
+        <di:waypoint x="500" y="1260" />
+        <di:waypoint x="960" y="1260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1g3o60r_di" bpmnElement="Flow_1g3o60r">
+        <di:waypoint x="770" y="530" />
+        <di:waypoint x="870" y="530" />
+        <di:waypoint x="870" y="785" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qela49_di" bpmnElement="Flow_0qela49">
+        <di:waypoint x="740" y="835" />
+        <di:waypoint x="740" y="882" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0lyyja2_di" bpmnElement="Flow_0lyyja2">
+        <di:waypoint x="895" y="810" />
+        <di:waypoint x="985" y="810" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04aiysr_di" bpmnElement="Flow_04aiysr">
+        <di:waypoint x="1010" y="835" />
+        <di:waypoint x="1010" y="1250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0a7wgp0_di" bpmnElement="Flow_0a7wgp0">
+        <di:waypoint x="870" y="835" />
+        <di:waypoint x="870" y="882" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1elsy1s_di" bpmnElement="Flow_1elsy1s">
+        <di:waypoint x="1060" y="1290" />
+        <di:waypoint x="1330" y="1290" />
+        <di:waypoint x="1330" y="835" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1yeli4o_di" bpmnElement="Flow_1yeli4o">
+        <di:waypoint x="1450" y="835" />
+        <di:waypoint x="1450" y="1033" />
+        <di:waypoint x="1510" y="1033" />
+        <di:waypoint x="1510" y="1230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08ov38x_di" bpmnElement="Flow_08ov38x">
+        <di:waypoint x="1425" y="810" />
+        <di:waypoint x="1410" y="810" />
+        <di:waypoint x="1410" y="1260" />
+        <di:waypoint x="1060" y="1260" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

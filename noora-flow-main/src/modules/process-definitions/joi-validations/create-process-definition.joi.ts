@@ -13,6 +13,22 @@ const connectorRestSchema = Joi.object({
   }).required(),
 });
 
+// Named connectors (for example `send-sms`) are resolved to their actual HTTP
+// configuration by Executor/ConnectorConfig at runtime.
+const connectorNamedRestSchema = Joi.object({
+  type: Joi.string().required().valid('rest'),
+  config: Joi.object({
+    connectorKey: Joi.string().required(),
+    headers: Joi.object().optional(),
+    params: Joi.object().optional(),
+    query: Joi.object().optional(),
+    data: Joi.object().optional(),
+    body: Joi.object().optional(),
+  })
+    .unknown(true)
+    .required(),
+});
+
 const serviceSchema = Joi.object({
   name: Joi.string().required(),
   inputs: Joi.object().optional(),
@@ -131,7 +147,7 @@ export const StagesSchema = {
     data: Joi.array().items(Joi.string()).default([]),
     criteria: criteriaSchema.allow(null).optional(),
     connector: Joi.alternatives()
-      .try(connectorRestSchema, connectorGrpcSchema)
+      .try(connectorRestSchema, connectorNamedRestSchema, connectorGrpcSchema)
       .allow(null)
       .optional(),
     dueDate: Joi.string().optional().allow(null),
@@ -160,7 +176,7 @@ export const StagesSchema = {
     ),
     criteria: criteriaSchema.allow(null).optional(),
     connector: Joi.alternatives()
-      .try(connectorRestSchema, connectorGrpcSchema)
+      .try(connectorRestSchema, connectorNamedRestSchema, connectorGrpcSchema)
       .allow(null)
       .optional(),
   }),
@@ -177,6 +193,12 @@ export const StagesSchema = {
     nextStages: Joi.array().items(Joi.string()).required(),
     criteria: criteriaSchema.allow(null).optional(),
     service: Joi.alternatives().try(serviceSchema).allow(null).optional(),
+    // BPMN connector service tasks are parsed by bpmnJsonToNativeJson and are
+    // valid executable service tasks, just like tasks backed by `service`.
+    connector: Joi.alternatives()
+      .try(connectorRestSchema, connectorNamedRestSchema, connectorGrpcSchema)
+      .allow(null)
+      .optional(),
   }),
 
   'compound-task': Joi.object({

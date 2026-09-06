@@ -97,7 +97,7 @@ function BuyerSelect<
 				}}
 			>
 				<div className="truncate">
-					{value?.name.trim() || value?.metadata.nameEn?.trim() || ""}
+					{value?.name?.trim() || value?.metadata?.nameEn?.trim() || ""}
 				</div>
 
 				{!!value && !disabled && (
@@ -143,8 +143,8 @@ function BuyerSelect<
 										</div>
 
 										<div className="space-y-1">
-											<div>{buyer.name.trim() || buyer.metadata.nameEn}</div>
-											{buyer.name.trim() && buyer.metadata.nameEn.trim() && (
+											<div>{buyer.name?.trim() || buyer.metadata?.nameEn || "-"}</div>
+											{buyer.name?.trim() && buyer.metadata?.nameEn?.trim() && (
 												<div className="text-xs text-muted-foreground">
 													{buyer.metadata.nameEn}
 												</div>

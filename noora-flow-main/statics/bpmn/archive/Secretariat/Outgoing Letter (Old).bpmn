@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1mrjlm8" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:collaboration id="Collaboration_1km85fv">
+    <bpmn:participant id="Participant_1540w77" processRef="SecretariatOutgoingLetter" />
+  </bpmn:collaboration>
+  <bpmn:process id="SecretariatOutgoingLetter" name="تدوین نامه صادره" isExecutable="true">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property name="documents" value="{&#34;types&#34;:{&#34;attachment&#34;:{&#34;title&#34;:&#34;پیوست&#34;,&#34;extensions&#34;:[&#34;docx&#34;,&#34;pdf&#34;,&#34;jpg&#34;,&#34;jpeg&#34;,&#34;png&#34;],&#34;multiple&#34;:true}},&#34;folders&#34;:{&#34;attachments&#34;:{&#34;title&#34;:&#34;پیوست ها / ATTACHMENTS&#34;,&#34;types&#34;:[&#34;attachment&#34;]}}}" />
+        <camunda:property name="stateList" value="[{&#34;name&#34;:&#34;letter-write&#34;,&#34;title&#34;:&#34;نوشتن نامه&#34;},{&#34;name&#34;:&#34;letter-review&#34;,&#34;title&#34;:&#34;بررسی نامه&#34;},{&#34;name&#34;:&#34;letter-rewrite&#34;,&#34;title&#34;:&#34;بازنویسی نامه&#34;},{&#34;name&#34;:&#34;letter-archive&#34;,&#34;title&#34;:&#34;بایگانی نامه&#34;}]" />
+        <camunda:property name="displayable" value="true" />
+        <camunda:property name="indicator" value="inspection" />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_0gxj4bc">
+      <bpmn:lane id="Lane_1akf23b" name="Author">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>LetterFormByAuthor</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>LetterViewByAuthor</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1lj0yhe" name="Manager">
+        <bpmn:flowNodeRef>Gateway_01qd7lg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1dheu0x</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1wbex18</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>LetterViewByManager</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0mxwj4d</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_196exxd</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>LetterReviewByManager</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_0vl861i" name="Secretary">
+        <bpmn:flowNodeRef>Gateway_11lcw05</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>LetterArchiveBySecretary</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1lkjyr4" name="Manager">
+        <bpmn:flowNodeRef>LetterReviewByDirector</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1lo8juh</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="LetterFormByAuthor" name="تدوین نامه" camunda:assignee="$[owner]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="LetterFormByAuthorNote" type="string" />
+          <camunda:formField id="LetterPriority" type="string" />
+          <camunda:formField id="LetterConfidentiality" type="string" />
+          <camunda:formField id="LetterToName" type="string" />
+          <camunda:formField id="LetterToPosition" type="string" />
+          <camunda:formField id="LetterSubject" type="string" />
+          <camunda:formField id="LetterBody" type="string" />
+          <camunda:formField id="LetterTranscriptions" type="object" />
+          <camunda:formField id="LetterHasAttachments" type="boolean" />
+          <camunda:formField id="RelatedInspectionCaseNo" type="string" />
+          <camunda:formField id="LetterFollowingOfs" type="object" />
+          <camunda:formField id="SendType" type="string" />
+          <camunda:formField id="Recipients" type="object" />
+          <camunda:formField id="NeedsToBeArchived" type="string" />
+          <camunda:formField id="IsFile" type="string" />
+          <camunda:formField id="LetterDate" type="date" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,LetterReviewByManagerNote,LetterFormByAuthorNote,LetterPriority,LetterConfidentiality,LetterToName,LetterToPosition,LetterSubject,LetterBody,LetterTranscriptions,LetterHasAttachments,RelatedInspectionCaseNo,LetterFollowingOfs,SendType,Recipients,NeedsToBeArchived,LetterDate" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1lo8juh</bpmn:incoming>
+      <bpmn:incoming>Flow_11ebck5</bpmn:incoming>
+      <bpmn:outgoing>Flow_16fnd8f</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:parallelGateway id="Gateway_01qd7lg">
+      <bpmn:incoming>Flow_0xuea43</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vbijly</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1a840t5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0978inw</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_1dheu0x">
+      <bpmn:incoming>Flow_1osqdwo</bpmn:incoming>
+      <bpmn:incoming>Flow_1s406h0</bpmn:incoming>
+      <bpmn:incoming>Flow_0ipuxzz</bpmn:incoming>
+      <bpmn:incoming>Flow_0gvjy72</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ycxamf</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:endEvent id="Event_1wbex18">
+      <bpmn:incoming>Flow_0ycxamf</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="LetterViewByManager" name="مشاهده نامه" camunda:assignee="$[data.Assignees.Manager.id]">
+      <bpmn:extensionElements>
+        <camunda:formData />
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,LetterReviewByManagerNote,RelatedInspectionCaseNo,LetterFollowingOfs,IsFile,LetterDate" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0978inw</bpmn:incoming>
+      <bpmn:outgoing>Flow_1s406h0</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="LetterViewByAuthor" name="مشاهده نامه" camunda:assignee="$[data.Assignees.Author.id]">
+      <bpmn:extensionElements>
+        <camunda:formData />
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,LetterReviewByManagerNote,InspectionCaseNo,SendType,RecipientName,RecipientAddress,NeedsToBeArchived,IsFile,LetterDate" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0vbijly</bpmn:incoming>
+      <bpmn:outgoing>Flow_1osqdwo</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0mxwj4d">
+      <bpmn:incoming>Flow_0rxxlha</bpmn:incoming>
+      <bpmn:outgoing>Flow_1uwusd8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_11ebck5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0fh27a6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0xuea43</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_196exxd">
+      <bpmn:incoming>Flow_0fh27a6</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="LetterReviewByDirector" name="تایید نامه" camunda:candidateGroups="ceo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="LetterReviewByDirectorStatus" type="string" />
+          <camunda:formField id="LetterReviewByDirectorNote" type="string" />
+          <camunda:formField id="LetterConfidentiality" type="string" />
+          <camunda:formField id="LetterToName" type="string" />
+          <camunda:formField id="LetterToPosition" type="string" />
+          <camunda:formField id="LetterSubject" type="string" />
+          <camunda:formField id="LetterBody" type="string" />
+          <camunda:formField id="LetterSignature" type="string" />
+          <camunda:formField id="LetterTranscriptions" type="object" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,LetterReviewByManagerNote,LetterReviewByDirectorStatus,LetterReviewByDirectorNote,LetterPriority,LetterConfidentiality,LetterToName,LetterToPosition,LetterSubject,LetterBody,LetterSignature,LetterTranscriptions,LetterHasAttachments,RelatedInspectionCaseNo,LetterFollowingOfs,IsFile,LetterDate" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1uwusd8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1slt1v3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="LetterReviewByManager" name="بررسی نامه " camunda:assignee="$[data.Assignees.Manager.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="LetterReviewByManagerStatus" type="string" />
+          <camunda:formField id="LetterReviewByManagerNote" type="string" />
+          <camunda:formField id="LetterNo" type="string" />
+          <camunda:formField id="LetterPages" type="string" />
+          <camunda:formField id="LetterConfidentiality" type="string" />
+          <camunda:formField id="LetterToName" type="string" />
+          <camunda:formField id="LetterToPosition" type="string" />
+          <camunda:formField id="LetterSubject" type="string" />
+          <camunda:formField id="LetterBody" type="string" />
+          <camunda:formField id="LetterSignature" type="string" />
+          <camunda:formField id="LetterTranscriptions" type="object" />
+          <camunda:formField id="LetterDate" type="date" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,LetterFormByAuthorNote,LetterReviewByDirectorStatus,LetterReviewByDirectorNote,LetterReviewByManagerStatus,LetterReviewByManagerNote,LetterPriority,LetterConfidentiality,LetterToName,LetterToPosition,LetterSubject,LetterBody,LetterSignature,LetterTranscriptions,LetterHasAttachments,RelatedInspectionCaseNo,LetterFollowingOfs,SendType,Recipients,NeedsToBeArchived,IsFile,LetterDate" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_16fnd8f</bpmn:incoming>
+      <bpmn:incoming>Flow_1slt1v3</bpmn:incoming>
+      <bpmn:outgoing>Flow_0rxxlha</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_11lcw05">
+      <bpmn:incoming>Flow_1a840t5</bpmn:incoming>
+      <bpmn:outgoing>Flow_0j52ka7</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0gvjy72</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="LetterArchiveBySecretary" name="بایگانی نامه" camunda:candidateGroups="secretary">
+      <bpmn:extensionElements>
+        <camunda:formData />
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,LetterReviewByManagerNote,RelatedInspectionCaseNo,SendType,Recipients,NeedsToBeArchived,IsFile,LetterDate" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0j52ka7</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ipuxzz</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1lo8juh" sourceRef="StartEvent_1" targetRef="LetterFormByAuthor" />
+    <bpmn:sequenceFlow id="Flow_11ebck5" name="بازگشت به ایجاد کننده" sourceRef="Gateway_0mxwj4d" targetRef="LetterFormByAuthor">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.LetterReviewByManagerStatus] == "returned"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_16fnd8f" sourceRef="LetterFormByAuthor" targetRef="LetterReviewByManager" />
+    <bpmn:sequenceFlow id="Flow_0xuea43" name="تایید" sourceRef="Gateway_0mxwj4d" targetRef="Gateway_01qd7lg">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.LetterReviewByManagerStatus] == "approved"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0978inw" sourceRef="Gateway_01qd7lg" targetRef="LetterViewByManager" />
+    <bpmn:sequenceFlow id="Flow_1a840t5" sourceRef="Gateway_01qd7lg" targetRef="Gateway_11lcw05" />
+    <bpmn:sequenceFlow id="Flow_0vbijly" sourceRef="Gateway_01qd7lg" targetRef="LetterViewByAuthor" />
+    <bpmn:sequenceFlow id="Flow_1s406h0" sourceRef="LetterViewByManager" targetRef="Gateway_1dheu0x" />
+    <bpmn:sequenceFlow id="Flow_0ipuxzz" sourceRef="LetterArchiveBySecretary" targetRef="Gateway_1dheu0x" />
+    <bpmn:sequenceFlow id="Flow_1osqdwo" sourceRef="LetterViewByAuthor" targetRef="Gateway_1dheu0x" />
+    <bpmn:sequenceFlow id="Flow_0gvjy72" sourceRef="Gateway_11lcw05" targetRef="Gateway_1dheu0x">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">!$[data.SendType] &amp;&amp; $[data.NeedsToBeArchived] == "no"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0ycxamf" sourceRef="Gateway_1dheu0x" targetRef="Event_1wbex18" />
+    <bpmn:sequenceFlow id="Flow_0rxxlha" sourceRef="LetterReviewByManager" targetRef="Gateway_0mxwj4d" />
+    <bpmn:sequenceFlow id="Flow_0fh27a6" name="لغو" sourceRef="Gateway_0mxwj4d" targetRef="Event_196exxd">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.LetterReviewByManagerStatus] == "canceled"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1uwusd8" name="ارسال به مدیریت" sourceRef="Gateway_0mxwj4d" targetRef="LetterReviewByDirector">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.LetterReviewByManagerStatus] == "pending"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1slt1v3" sourceRef="LetterReviewByDirector" targetRef="LetterReviewByManager" />
+    <bpmn:sequenceFlow id="Flow_0j52ka7" sourceRef="Gateway_11lcw05" targetRef="LetterArchiveBySecretary">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.SendType] || $[data.NeedsToBeArchived] == "yes"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1km85fv">
+      <bpmndi:BPMNShape id="Participant_1540w77_di" bpmnElement="Participant_1540w77" isHorizontal="true">
+        <dc:Bounds x="175" y="85" width="1660" height="970" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1lkjyr4_di" bpmnElement="Lane_1lkjyr4" isHorizontal="true">
+        <dc:Bounds x="205" y="825" width="1630" height="230" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0vl861i_di" bpmnElement="Lane_0vl861i" isHorizontal="true">
+        <dc:Bounds x="205" y="585" width="1630" height="240" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1lj0yhe_di" bpmnElement="Lane_1lj0yhe" isHorizontal="true">
+        <dc:Bounds x="205" y="325" width="1630" height="260" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1akf23b_di" bpmnElement="Lane_1akf23b" isHorizontal="true">
+        <dc:Bounds x="205" y="85" width="1630" height="240" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="337" y="187" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ww989q_di" bpmnElement="LetterFormByAuthor">
+        <dc:Bounds x="515" y="165" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1upg9zp_di" bpmnElement="Gateway_01qd7lg">
+        <dc:Bounds x="1155" y="430" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0ew2zyc_di" bpmnElement="Gateway_1dheu0x">
+        <dc:Bounds x="1565" y="430" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1wbex18_di" bpmnElement="Event_1wbex18">
+        <dc:Bounds x="1702" y="437" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1j5wwqr_di" bpmnElement="LetterViewByManager">
+        <dc:Bounds x="1350" y="415" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1y0hzga_di" bpmnElement="LetterViewByAuthor">
+        <dc:Bounds x="1350" y="165" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0mxwj4d_di" bpmnElement="Gateway_0mxwj4d" isMarkerVisible="true">
+        <dc:Bounds x="925" y="430" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_196exxd_di" bpmnElement="Event_196exxd">
+        <dc:Bounds x="1052" y="367" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1u34yjo_di" bpmnElement="LetterReviewByDirector">
+        <dc:Bounds x="820" y="925" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14pgeio_di" bpmnElement="LetterReviewByManager">
+        <dc:Bounds x="740" y="415" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_11lcw05_di" bpmnElement="Gateway_11lcw05" isMarkerVisible="true">
+        <dc:Bounds x="1275" y="660" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1gl71gl_di" bpmnElement="LetterArchiveBySecretary">
+        <dc:Bounds x="1400" y="645" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1lo8juh_di" bpmnElement="Flow_1lo8juh">
+        <di:waypoint x="373" y="205" />
+        <di:waypoint x="515" y="205" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11ebck5_di" bpmnElement="Flow_11ebck5">
+        <di:waypoint x="950" y="430" />
+        <di:waypoint x="950" y="125" />
+        <di:waypoint x="565" y="125" />
+        <di:waypoint x="565" y="165" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="720" y="107" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16fnd8f_di" bpmnElement="Flow_16fnd8f">
+        <di:waypoint x="615" y="205" />
+        <di:waypoint x="650" y="205" />
+        <di:waypoint x="650" y="455" />
+        <di:waypoint x="740" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xuea43_di" bpmnElement="Flow_0xuea43">
+        <di:waypoint x="975" y="455" />
+        <di:waypoint x="1155" y="455" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1058" y="437" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0978inw_di" bpmnElement="Flow_0978inw">
+        <di:waypoint x="1205" y="455" />
+        <di:waypoint x="1350" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1a840t5_di" bpmnElement="Flow_1a840t5">
+        <di:waypoint x="1180" y="480" />
+        <di:waypoint x="1180" y="685" />
+        <di:waypoint x="1275" y="685" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1208" y="683" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vbijly_di" bpmnElement="Flow_0vbijly">
+        <di:waypoint x="1180" y="430" />
+        <di:waypoint x="1180" y="205" />
+        <di:waypoint x="1350" y="205" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1214" y="163" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1s406h0_di" bpmnElement="Flow_1s406h0">
+        <di:waypoint x="1450" y="455" />
+        <di:waypoint x="1565" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ipuxzz_di" bpmnElement="Flow_0ipuxzz">
+        <di:waypoint x="1500" y="685" />
+        <di:waypoint x="1590" y="685" />
+        <di:waypoint x="1590" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1osqdwo_di" bpmnElement="Flow_1osqdwo">
+        <di:waypoint x="1450" y="205" />
+        <di:waypoint x="1590" y="205" />
+        <di:waypoint x="1590" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gvjy72_di" bpmnElement="Flow_0gvjy72">
+        <di:waypoint x="1300" y="710" />
+        <di:waypoint x="1300" y="765" />
+        <di:waypoint x="1590" y="765" />
+        <di:waypoint x="1590" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ycxamf_di" bpmnElement="Flow_0ycxamf">
+        <di:waypoint x="1615" y="455" />
+        <di:waypoint x="1702" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0rxxlha_di" bpmnElement="Flow_0rxxlha">
+        <di:waypoint x="840" y="455" />
+        <di:waypoint x="925" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fh27a6_di" bpmnElement="Flow_0fh27a6">
+        <di:waypoint x="950" y="430" />
+        <di:waypoint x="950" y="385" />
+        <di:waypoint x="1052" y="385" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="999" y="358" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1uwusd8_di" bpmnElement="Flow_1uwusd8">
+        <di:waypoint x="950" y="480" />
+        <di:waypoint x="950" y="965" />
+        <di:waypoint x="920" y="965" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="969" y="528" width="62" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1slt1v3_di" bpmnElement="Flow_1slt1v3">
+        <di:waypoint x="820" y="965" />
+        <di:waypoint x="790" y="965" />
+        <di:waypoint x="790" y="495" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0j52ka7_di" bpmnElement="Flow_0j52ka7">
+        <di:waypoint x="1325" y="685" />
+        <di:waypoint x="1400" y="685" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

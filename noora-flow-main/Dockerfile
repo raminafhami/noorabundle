@@ -33,6 +33,8 @@ ENV PUPPETEER_SKIP_DOWNLOAD true
 RUN npm ci
 ##
 # Now, copy the whole codebase.
+# Templates are bundled with the image; the named production volume preserves
+# the directory across container replacements.
 COPY --chown=node:node assets ./assets/
 COPY --chown=node:node statics ./statics/
 COPY --chown=node:node src ./src/

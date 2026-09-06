@@ -355,24 +355,29 @@ export class ProcessDefinitionService {
     //   condition = {};
     // }
 
-    condition.$and.push({
-      $and: [
-        {
-          $or: [
-            { 'candidateStarter.users': user.id },
-            { 'candidateStarter.users': user.phoneNo },
-            { 'candidateStarter.groups': { $in: user.groups } }, // todo need change
-            {
-              $and: [
-                { 'candidateStarter.groups': { $size: 0 } },
-                { 'candidateStarter.users': { $size: 0 } },
-              ],
-            },
-          ],
-        },
-        { $or: [{ displayable: true }, { displayable: { $exists: false } }] },
-      ],
-    });
+    const visibilityConditions: any[] = [
+      { $or: [{ displayable: true }, { displayable: { $exists: false } }] },
+    ];
+
+    // A system administrator manages and tests every startable workflow. Other
+    // users remain restricted by the BPMN candidate starter configuration.
+    if (!user.groups?.includes('system-admin')) {
+      visibilityConditions.unshift({
+        $or: [
+          { 'candidateStarter.users': user.id },
+          { 'candidateStarter.users': user.phoneNo },
+          { 'candidateStarter.groups': { $in: user.groups } },
+          {
+            $and: [
+              { 'candidateStarter.groups': { $size: 0 } },
+              { 'candidateStarter.users': { $size: 0 } },
+            ],
+          },
+        ],
+      });
+    }
+
+    condition.$and.push({ $and: visibilityConditions });
 
     const count = await this.processDefinitionRepositoryImpl.count(condition);
     const data = await this.processDefinitionRepositoryImpl.find(

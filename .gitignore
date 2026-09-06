@@ -1,0 +1,16 @@
+# Local and production secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Dependencies and generated output
+node_modules/
+.next/
+dist/
+coverage/
+
+# Local runtime artifacts
+*.log
+.DS_Store
+Thumbs.db

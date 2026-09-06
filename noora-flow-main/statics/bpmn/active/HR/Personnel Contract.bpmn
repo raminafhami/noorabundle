@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1mv9x1k" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <bpmn:collaboration id="Collaboration_0x5z6fh">
+    <bpmn:participant id="Participant_1w915is" name="قرارداد پرسنلی" processRef="PersonnelContract" />
+  </bpmn:collaboration>
+  <bpmn:process id="PersonnelContract" name="قرارداد پرسنلی" isExecutable="true" camunda:candidateStarterGroups="hr-manager">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property name="stateList" value="[{&#34;name&#34;:&#34;review-by-qa&#34;,&#34;title&#34;:&#34;بررسی قرارداد (تضمین کیفیت)&#34;},{&#34;name&#34;:&#34;review-by-financial&#34;,&#34;title&#34;:&#34;بررسی قرارداد (مالی)&#34;},{&#34;name&#34;:&#34;review-by-personnel&#34;,&#34;title&#34;:&#34;بررسی قرارداد (پرسنل)&#34;},{&#34;name&#34;:&#34;review-by-ceo&#34;,&#34;title&#34;:&#34;بررسی قرارداد (مدیرعامل)&#34;},{&#34;name&#34;:&#34;finalized&#34;,&#34;title&#34;:&#34;نهایی شده&#34;},{&#34;name&#34;:&#34;review-by-hr&#34;,&#34;title&#34;:&#34;بررسی قرارداد (منابع انسانی)&#34;}]" />
+        <camunda:property name="displayable" value="false" />
+        <camunda:property name="indicator" value="contract" />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_08smyqc">
+      <bpmn:lane id="Lane_1gcoab8" name="تضمین کیفیت">
+        <bpmn:flowNodeRef>Gateway_1f5r83r</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ContractReviewByQA</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0pmae3q</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ExtraFields</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_0opwimg" name="مالی">
+        <bpmn:flowNodeRef>ContractReviewByFinancial</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0w5ppio</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1vsnl1e" name="منابع انسانی">
+        <bpmn:flowNodeRef>Event_1t4j5fp</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ContractReturn</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_04r3hd7" name="پرسنل">
+        <bpmn:flowNodeRef>Gateway_017p5z0</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ContractReviewByPersonnel</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1d0me0d" name="مدیرعامل">
+        <bpmn:flowNodeRef>Gateway_1ytt263</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1imbnyu</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ContractReviewByCEO</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:exclusiveGateway id="Gateway_1f5r83r">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_1b3ai43</bpmn:incoming>
+      <bpmn:outgoing>Flow_15u2ddy</bpmn:outgoing>
+      <bpmn:outgoing>Flow_181mpo1</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="ContractReviewByQA" name="بررسی قرارداد (تضمین کیفیت)" camunda:candidateGroups="qa-manager">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,ContractId,PreviousTask" />
+        </camunda:properties>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="ContractReviewNoteByQA" type="string" />
+          <camunda:formField id="ContractReviewStatusByQA" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1qvvdej</bpmn:incoming>
+      <bpmn:incoming>Flow_195mi2x</bpmn:incoming>
+      <bpmn:outgoing>Flow_1b3ai43</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1ytt263">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_1m3kv25</bpmn:incoming>
+      <bpmn:outgoing>Flow_041d6vd</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ks6zia</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0jeihgi</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0e006iw</bpmn:outgoing>
+      <bpmn:outgoing>Flow_195mi2x</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_1imbnyu">
+      <bpmn:incoming>Flow_041d6vd</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event_1t4j5fp">
+      <bpmn:incoming>Flow_1wbnh49</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="ContractReviewByFinancial" name="بررسی قرارداد (مالی)" camunda:candidateGroups="financial-expert">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="ContractReviewNoteByFinancial" type="string" />
+          <camunda:formField id="ContractReviewStatusByFinancial" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,ContractId,PreviousTask" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_181mpo1</bpmn:incoming>
+      <bpmn:incoming>Flow_0e006iw</bpmn:incoming>
+      <bpmn:outgoing>Flow_1vi8tsx</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0w5ppio">
+      <bpmn:incoming>Flow_1vi8tsx</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qz309u</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1812sza</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_017p5z0">
+      <bpmn:incoming>Flow_0dz3l4m</bpmn:incoming>
+      <bpmn:outgoing>Flow_0rplez1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1dmy8ls</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:startEvent id="Event_0pmae3q">
+      <bpmn:extensionElements>
+        <camunda:formData />
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_1qvvdej</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="ExtraFields" name="شروع">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="ContractId" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:userTask id="ContractReturn" name="بازگشت قرارداد (منابع انسانی)" camunda:candidateUsers="09120272001">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,ContractId,PreviousTask" />
+        </camunda:properties>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_15u2ddy</bpmn:incoming>
+      <bpmn:incoming>Flow_0qz309u</bpmn:incoming>
+      <bpmn:incoming>Flow_0rplez1</bpmn:incoming>
+      <bpmn:incoming>Flow_0ks6zia</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wbnh49</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1b3ai43" sourceRef="ContractReviewByQA" targetRef="Gateway_1f5r83r" />
+    <bpmn:sequenceFlow id="Flow_15u2ddy" name="بازگشت" sourceRef="Gateway_1f5r83r" targetRef="ContractReturn">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ContractReviewStatusByQA] === "return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_181mpo1" name="تایید" sourceRef="Gateway_1f5r83r" targetRef="ContractReviewByFinancial">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ContractReviewStatusByQA] === "forward"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1qvvdej" sourceRef="Event_0pmae3q" targetRef="ContractReviewByQA" />
+    <bpmn:sequenceFlow id="Flow_0qz309u" name="بازگشت" sourceRef="Gateway_0w5ppio" targetRef="ContractReturn">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ContractReviewStatusByFinancial] === "return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1dmy8ls" name="تایید" sourceRef="Gateway_017p5z0" targetRef="ContractReviewByCEO">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ContractReviewStatusByPersonnel] === "forward"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1m3kv25" sourceRef="ContractReviewByCEO" targetRef="Gateway_1ytt263" />
+    <bpmn:sequenceFlow id="Flow_041d6vd" name="تایید" sourceRef="Gateway_1ytt263" targetRef="Event_1imbnyu">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ContractReviewStatusByCEO] === "forward"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0ks6zia" name="بازگشت" sourceRef="Gateway_1ytt263" targetRef="ContractReturn">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ContractReviewStatusByCEO] === "return-hr"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1wbnh49" sourceRef="ContractReturn" targetRef="Event_1t4j5fp" />
+    <bpmn:sequenceFlow id="Flow_0rplez1" name="بازگشت" sourceRef="Gateway_017p5z0" targetRef="ContractReturn">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ContractReviewStatusByPersonnel] === "return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1vi8tsx" sourceRef="ContractReviewByFinancial" targetRef="Gateway_0w5ppio" />
+    <bpmn:sequenceFlow id="Flow_1812sza" name="تایید" sourceRef="Gateway_0w5ppio" targetRef="ContractReviewByPersonnel">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ContractReviewStatusByFinancial] === "forward"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0dz3l4m" sourceRef="ContractReviewByPersonnel" targetRef="Gateway_017p5z0" />
+    <bpmn:userTask id="ContractReviewByPersonnel" name="بررسی قرارداد (پرسنل)" camunda:assignee="$[data.Assignees.personnel.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="ContractReviewNoteByPersonnel" type="string" />
+          <camunda:formField id="ContractReviewStatusByPersonnel" type="string" />
+          <camunda:formField id="PersonnelConfirmationStatus" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,ContractId,PreviousTask" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1812sza</bpmn:incoming>
+      <bpmn:incoming>Flow_0jeihgi</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dz3l4m</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="ContractReviewByCEO" name="بررسی قرارداد (مدیرعامل)" camunda:candidateGroups="ceo">
+      <bpmn:extensionElements>
+        <camunda:properties>
+          <camunda:property name="data" value="Assignees,ContractId,PreviousTask" />
+        </camunda:properties>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="ContractReviewNoteByCEO" type="string" />
+          <camunda:formField id="ContractReviewStatusByCEO" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1dmy8ls</bpmn:incoming>
+      <bpmn:outgoing>Flow_1m3kv25</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0jeihgi" sourceRef="Gateway_1ytt263" targetRef="ContractReviewByPersonnel">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ContractReviewStatusByCEO] === "return-personnel"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0e006iw" sourceRef="Gateway_1ytt263" targetRef="ContractReviewByFinancial">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ContractReviewStatusByCEO] === "return-financial"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_195mi2x" sourceRef="Gateway_1ytt263" targetRef="ContractReviewByQA">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.ContractReviewStatusByCEO] === "return-qa"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0x5z6fh">
+      <bpmndi:BPMNShape id="Participant_1w915is_di" bpmnElement="Participant_1w915is" isHorizontal="true">
+        <dc:Bounds x="165" y="80" width="2195" height="1500" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1d0me0d_di" bpmnElement="Lane_1d0me0d" isHorizontal="true">
+        <dc:Bounds x="195" y="1280" width="2165" height="300" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_04r3hd7_di" bpmnElement="Lane_04r3hd7" isHorizontal="true">
+        <dc:Bounds x="195" y="990" width="2165" height="290" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1vsnl1e_di" bpmnElement="Lane_1vsnl1e" isHorizontal="true">
+        <dc:Bounds x="195" y="80" width="2165" height="320" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0opwimg_di" bpmnElement="Lane_0opwimg" isHorizontal="true">
+        <dc:Bounds x="195" y="700" width="2165" height="290" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1gcoab8_di" bpmnElement="Lane_1gcoab8" isHorizontal="true">
+        <dc:Bounds x="195" y="400" width="2165" height="300" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1f5r83r_di" bpmnElement="Gateway_1f5r83r" isMarkerVisible="true">
+        <dc:Bounds x="775" y="525" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1100jfv_di" bpmnElement="ContractReviewByQA">
+        <dc:Bounds x="570" y="510" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1ytt263_di" bpmnElement="Gateway_1ytt263" isMarkerVisible="true">
+        <dc:Bounds x="1975" y="1405" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1imbnyu_di" bpmnElement="Event_1imbnyu">
+        <dc:Bounds x="2137" y="1412" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1t4j5fp_di" bpmnElement="Event_1t4j5fp">
+        <dc:Bounds x="1112" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1apic82_di" bpmnElement="ContractReviewByFinancial">
+        <dc:Bounds x="930" y="810" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0w5ppio_di" bpmnElement="Gateway_0w5ppio" isMarkerVisible="true">
+        <dc:Bounds x="1165" y="825" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_017p5z0_di" bpmnElement="Gateway_017p5z0" isMarkerVisible="true">
+        <dc:Bounds x="1585" y="1105" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0pmae3q_di" bpmnElement="Event_0pmae3q">
+        <dc:Bounds x="432" y="532" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06dvcdj_di" bpmnElement="ExtraFields">
+        <dc:Bounds x="290" y="510" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14jpiid_di" bpmnElement="ContractReturn">
+        <dc:Bounds x="930" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ayidh3_di" bpmnElement="ContractReviewByPersonnel">
+        <dc:Bounds x="1340" y="1090" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02t9y85_di" bpmnElement="ContractReviewByCEO">
+        <dc:Bounds x="1760" y="1390" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1b3ai43_di" bpmnElement="Flow_1b3ai43">
+        <di:waypoint x="670" y="550" />
+        <di:waypoint x="775" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15u2ddy_di" bpmnElement="Flow_15u2ddy">
+        <di:waypoint x="800" y="525" />
+        <di:waypoint x="800" y="240" />
+        <di:waypoint x="930" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="755" y="503" width="29" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_181mpo1_di" bpmnElement="Flow_181mpo1">
+        <di:waypoint x="825" y="550" />
+        <di:waypoint x="880" y="550" />
+        <di:waypoint x="880" y="850" />
+        <di:waypoint x="930" y="850" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="848" y="523" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qvvdej_di" bpmnElement="Flow_1qvvdej">
+        <di:waypoint x="468" y="550" />
+        <di:waypoint x="570" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qz309u_di" bpmnElement="Flow_0qz309u">
+        <di:waypoint x="1190" y="825" />
+        <di:waypoint x="1190" y="560" />
+        <di:waypoint x="980" y="560" />
+        <di:waypoint x="980" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1145" y="803" width="29" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dmy8ls_di" bpmnElement="Flow_1dmy8ls">
+        <di:waypoint x="1635" y="1130" />
+        <di:waypoint x="1700" y="1130" />
+        <di:waypoint x="1700" y="1430" />
+        <di:waypoint x="1760" y="1430" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1652" y="1103" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1m3kv25_di" bpmnElement="Flow_1m3kv25">
+        <di:waypoint x="1860" y="1430" />
+        <di:waypoint x="1975" y="1430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_041d6vd_di" bpmnElement="Flow_041d6vd">
+        <di:waypoint x="2025" y="1430" />
+        <di:waypoint x="2137" y="1430" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2042" y="1403" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ks6zia_di" bpmnElement="Flow_0ks6zia">
+        <di:waypoint x="2000" y="1405" />
+        <di:waypoint x="2000" y="560" />
+        <di:waypoint x="980" y="560" />
+        <di:waypoint x="980" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1955" y="1383" width="29" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wbnh49_di" bpmnElement="Flow_1wbnh49">
+        <di:waypoint x="1030" y="240" />
+        <di:waypoint x="1112" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0rplez1_di" bpmnElement="Flow_0rplez1">
+        <di:waypoint x="1610" y="1105" />
+        <di:waypoint x="1610" y="560" />
+        <di:waypoint x="980" y="560" />
+        <di:waypoint x="980" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1565" y="1083" width="29" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vi8tsx_di" bpmnElement="Flow_1vi8tsx">
+        <di:waypoint x="1030" y="850" />
+        <di:waypoint x="1165" y="850" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1812sza_di" bpmnElement="Flow_1812sza">
+        <di:waypoint x="1215" y="850" />
+        <di:waypoint x="1280" y="850" />
+        <di:waypoint x="1280" y="1130" />
+        <di:waypoint x="1340" y="1130" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1232" y="823" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dz3l4m_di" bpmnElement="Flow_0dz3l4m">
+        <di:waypoint x="1440" y="1130" />
+        <di:waypoint x="1585" y="1130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jeihgi_di" bpmnElement="Flow_0jeihgi">
+        <di:waypoint x="2000" y="1405" />
+        <di:waypoint x="2000" y="1220" />
+        <di:waypoint x="1390" y="1220" />
+        <di:waypoint x="1390" y="1170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0e006iw_di" bpmnElement="Flow_0e006iw">
+        <di:waypoint x="2000" y="1405" />
+        <di:waypoint x="2000" y="940" />
+        <di:waypoint x="980" y="940" />
+        <di:waypoint x="980" y="890" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_195mi2x_di" bpmnElement="Flow_195mi2x">
+        <di:waypoint x="2000" y="1405" />
+        <di:waypoint x="2000" y="640" />
+        <di:waypoint x="620" y="640" />
+        <di:waypoint x="620" y="590" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

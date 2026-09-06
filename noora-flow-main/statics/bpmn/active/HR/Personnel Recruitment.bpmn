@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_151zp2q" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.25.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <bpmn:collaboration id="Collaboration_0aj9q91">
+    <bpmn:participant id="Participant_1nxgu8f" processRef="HR_Personnel_Recruitment" />
+  </bpmn:collaboration>
+  <bpmn:process id="HR_Personnel_Recruitment" name="درخواست جذب نیرو" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property name="indicator" value="inspection" />
+        <camunda:property name="displayable" value="true" />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:laneSet id="LaneSet_0kzifk9">
+      <bpmn:lane id="Lane_0mvp48s" name="مدیران بخش">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>RequestForm</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>IntervieweeListForm</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1s869mx</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>IntervieweeItemForm</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_0lo4nks" name="مدیر منابع انسانی">
+        <bpmn:extensionElements />
+        <bpmn:flowNodeRef>RequestReviewByHr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_17ds0l7</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>IntervieweeReviewByHr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_18ugrf6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>InformationViewByHr</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_0sbww37</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1ckeevf" name="مدیرعامل">
+        <bpmn:flowNodeRef>RequestReviewByCeo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0gk9w2b</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_03ye733</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>IntervieweeReviewByCeo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_0skm80s</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_0tflj9h" name="مدیر مالی">
+        <bpmn:flowNodeRef>InformationViewByAccountant</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_1mc2k0y</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>WelcomeSms</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:sequenceFlow id="Flow_0govtgy" sourceRef="Gateway_17ds0l7" targetRef="RequestForm">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.RequestReviewByHrStatus] === "return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_13xksp9" sourceRef="RequestForm" targetRef="RequestReviewByHr" />
+    <bpmn:userTask id="RequestReviewByHr" name="بررسی درخواست (منابع انسانی)" camunda:assignee="$[data.Assignees.hr.id]" camunda:candidateGroups="hr-manager">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="RequestReviewByHrStatus" type="string" />
+          <camunda:formField id="RequestReviewByHrNote" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees,RequestFormNote,RequestReviewByCeoNote,JobDescription,IndividualType,Salary,StartDate,SalaryMin,SalaryMax" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_13xksp9</bpmn:incoming>
+      <bpmn:incoming>Flow_0j9q7j1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1id8kwh</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_17ds0l7">
+      <bpmn:incoming>Flow_1id8kwh</bpmn:incoming>
+      <bpmn:outgoing>Flow_0govtgy</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1nln2fw</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="RequestReviewByCeo" name="بررسی درخواست (مدیرعامل)" camunda:assignee="$[data.Assignees.ceo.id]" camunda:candidateGroups="ceo">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="RequestReviewByCeoStatus" type="string" />
+          <camunda:formField id="RequestReviewByCeoNote" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees,RequestFormNote,RequestReviewByHrNote,JobDescription,IndividualType,Salary,StartDate,SalaryMin,SalaryMax" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1nln2fw</bpmn:incoming>
+      <bpmn:outgoing>Flow_1vf4kng</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0gk9w2b">
+      <bpmn:incoming>Flow_1vf4kng</bpmn:incoming>
+      <bpmn:outgoing>Flow_0j9q7j1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0bbyfdo</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_03ye733">
+      <bpmn:incoming>Flow_0bbyfdo</bpmn:incoming>
+      <bpmn:outgoing>Flow_1erj70c</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0hjlriv</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="IntervieweeReviewByCeo" name="بررسی اطلاعات (مدیرعامل)" camunda:assignee="$[data.Assignees.ceo.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="IntervieweeReviewByCeoStatus" type="string" />
+          <camunda:formField id="IntervieweeReviewByCeoNote" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees,IntervieweeListFormNote,IntervieweeReviewByHrNote,JobDescription,SalaryMin,SalaryMax,IntervieweeItems,Salary,StartDate,InsuranceDate" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0n98k73</bpmn:incoming>
+      <bpmn:outgoing>Flow_07yytwx</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="IntervieweeReviewByHr" name="بررسی اطلاعات (منابع انسانی)" camunda:assignee="$[data.Assignees.hr.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="IntervieweeReviewByHrStatus" type="string" />
+          <camunda:formField id="IntervieweeReviewByHrNote" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees,IntervieweeListFormNote,IntervieweeReviewByCeoNote,JobDescription,SalaryMin,SalaryMax,IntervieweeItems,Salary,StartDate,InsuranceDate" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0kh28r0</bpmn:incoming>
+      <bpmn:incoming>Flow_0oo4gg9</bpmn:incoming>
+      <bpmn:outgoing>Flow_1r8wu16</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_18ugrf6">
+      <bpmn:incoming>Flow_1r8wu16</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ybov0v</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0n98k73</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0j9q7j1" sourceRef="Gateway_0gk9w2b" targetRef="RequestReviewByHr">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.RequestReviewByCeoStatus] === "return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1id8kwh" sourceRef="RequestReviewByHr" targetRef="Gateway_17ds0l7" />
+    <bpmn:sequenceFlow id="Flow_1nln2fw" sourceRef="Gateway_17ds0l7" targetRef="RequestReviewByCeo">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.RequestReviewByHrStatus] === "forward"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1vf4kng" sourceRef="RequestReviewByCeo" targetRef="Gateway_0gk9w2b" />
+    <bpmn:sequenceFlow id="Flow_0bbyfdo" sourceRef="Gateway_0gk9w2b" targetRef="Gateway_03ye733">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.RequestReviewByCeoStatus] === "forward"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1erj70c" sourceRef="Gateway_03ye733" targetRef="IntervieweeListForm">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IndividualType] === "external"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0hjlriv" sourceRef="Gateway_03ye733" targetRef="InformationViewByAccountant">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IndividualType] === "internal"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1ybov0v" sourceRef="Gateway_18ugrf6" targetRef="IntervieweeListForm">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IntervieweeReviewByHrStatus] === "return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0oo4gg9" sourceRef="Gateway_1s869mx" targetRef="IntervieweeReviewByHr">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IntervieweeListFormStatus] === "forward"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0n98k73" sourceRef="Gateway_18ugrf6" targetRef="IntervieweeReviewByCeo">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IntervieweeReviewByHrStatus] === "forward"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_07yytwx" sourceRef="IntervieweeReviewByCeo" targetRef="Gateway_0skm80s" />
+    <bpmn:sequenceFlow id="Flow_0kh28r0" sourceRef="Gateway_0skm80s" targetRef="IntervieweeReviewByHr">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IntervieweeReviewByCeoStatus] === "return"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1r8wu16" sourceRef="IntervieweeReviewByHr" targetRef="Gateway_18ugrf6" />
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1ei5f3q</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="RequestForm" name="ثبت درخواست جذب" camunda:assignee="$[owner]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="RequestFormStatus" type="string" />
+          <camunda:formField id="RequestFormNote" type="string" />
+          <camunda:formField id="JobDescription" type="string" />
+          <camunda:formField id="IndividualType" type="boolean" />
+          <camunda:formField id="Salary" type="string" />
+          <camunda:formField id="StartDate" type="string" />
+          <camunda:formField id="SalaryMin" type="string" />
+          <camunda:formField id="SalaryMax" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees,RequestReviewByHrNote,RequestReviewByCeoNote" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ei5f3q</bpmn:incoming>
+      <bpmn:incoming>Flow_0govtgy</bpmn:incoming>
+      <bpmn:outgoing>Flow_13xksp9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="IntervieweeListForm" name="تکمیل اطلاعات نیروهای خارجی" camunda:assignee="$[data.Assignees.creator.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="IntervieweeListFormStatus" type="string" />
+          <camunda:formField id="IntervieweeListFormNote" type="string" />
+          <camunda:formField id="IntervieweeItems" type="object" />
+          <camunda:formField id="IntervieweeInEdit" type="string" />
+          <camunda:formField id="Salary" type="string" />
+          <camunda:formField id="StartDate" type="string" />
+          <camunda:formField id="InsuranceDate" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees,RequestFormNote,RequestReviewByHrNote,RequestReviewByCeoNote,IntervieweeReviewByHrNote,IntervieweeReviewByCeoNote,JobDescription,SalaryMin,SalaryMax" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1erj70c</bpmn:incoming>
+      <bpmn:incoming>Flow_1ybov0v</bpmn:incoming>
+      <bpmn:incoming>Flow_1efnw4n</bpmn:incoming>
+      <bpmn:outgoing>Flow_0av6j50</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1s869mx">
+      <bpmn:incoming>Flow_0av6j50</bpmn:incoming>
+      <bpmn:outgoing>Flow_0g3u35f</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0oo4gg9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="IntervieweeItemForm" name="تکمیل اطلاعات مصاحبه شونده" camunda:assignee="$[data.Assignees.creator.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="IntervieweeItems" type="object" />
+          <camunda:formField id="IntervieweeInEdit" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees,JobDescription" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0g3u35f</bpmn:incoming>
+      <bpmn:outgoing>Flow_1efnw4n</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1ei5f3q" sourceRef="StartEvent_1" targetRef="RequestForm" />
+    <bpmn:sequenceFlow id="Flow_1efnw4n" sourceRef="IntervieweeItemForm" targetRef="IntervieweeListForm" />
+    <bpmn:sequenceFlow id="Flow_0av6j50" sourceRef="IntervieweeListForm" targetRef="Gateway_1s869mx" />
+    <bpmn:sequenceFlow id="Flow_0g3u35f" sourceRef="Gateway_1s869mx" targetRef="IntervieweeItemForm">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IntervieweeListFormStatus] === "upsert"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_0skm80s">
+      <bpmn:incoming>Flow_07yytwx</bpmn:incoming>
+      <bpmn:outgoing>Flow_0kh28r0</bpmn:outgoing>
+      <bpmn:outgoing>Flow_01a2qnf</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="InformationViewByAccountant" name="مشاهده اطلاعات (حسابداری)" camunda:assignee="$[data.Assignees.accountant.id]" camunda:candidateGroups="financial-expert">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="InformationViewByAccountantStatus" type="string" />
+          <camunda:formField id="InformationViewByAccountantNote" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees,RequestFormNote,RequestReviewByHrNote,RequestReviewByCeoNote,IntervieweeListFormNote,IntervieweeReviewByHrNote,IntervieweeReviewByCeoNote,JobDescription,IndividualType,IntervieweeItems,Salary,StartDate,InsuranceDate" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_01a2qnf</bpmn:incoming>
+      <bpmn:incoming>Flow_0hjlriv</bpmn:incoming>
+      <bpmn:outgoing>Flow_0yecwuv</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_1mc2k0y">
+      <bpmn:incoming>Flow_0yecwuv</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nz9crj</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1vvhcf9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="WelcomeSms" name="پیامک خوشامدگویی">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="body.templateId">000</camunda:inputParameter>
+            <camunda:inputParameter name="body.phoneNumber">$[data.phoneNumber]</camunda:inputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>send-sms</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1nz9crj</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gbekvv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="InformationViewByHr" name="مشاهده اطلاعات (منابع انسانی)" camunda:assignee="$[data.Assignees.hr.id]">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="PreviousTask" type="object" />
+          <camunda:formField id="Assignees" type="object" />
+          <camunda:formField id="InformationViewByHrStatus" type="string" />
+          <camunda:formField id="InformationViewByHrNote" type="string" />
+        </camunda:formData>
+        <camunda:properties>
+          <camunda:property name="data" value="PreviousTask,Assignees,RequestFormNote,RequestReviewByHrNote,RequestReviewByCeoNote,IntervieweeListFormNote,IntervieweeReviewByHrNote,IntervieweeReviewByCeoNote,InformationViewByAccountantNote,JobDescription,IndividualType,IntervieweeItems,Salary,StartDate,InsuranceDate" />
+        </camunda:properties>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1vvhcf9</bpmn:incoming>
+      <bpmn:incoming>Flow_1gbekvv</bpmn:incoming>
+      <bpmn:outgoing>Flow_0tp1v6f</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0sbww37">
+      <bpmn:incoming>Flow_0tp1v6f</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_01a2qnf" sourceRef="Gateway_0skm80s" targetRef="InformationViewByAccountant">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IntervieweeReviewByCeoStatus] === "forward"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0yecwuv" sourceRef="InformationViewByAccountant" targetRef="Gateway_1mc2k0y" />
+    <bpmn:sequenceFlow id="Flow_1nz9crj" sourceRef="Gateway_1mc2k0y" targetRef="WelcomeSms">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IndividualType] === "external"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1vvhcf9" sourceRef="Gateway_1mc2k0y" targetRef="InformationViewByHr">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$[data.IndividualType] === "internal"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1gbekvv" sourceRef="WelcomeSms" targetRef="InformationViewByHr" />
+    <bpmn:sequenceFlow id="Flow_0tp1v6f" sourceRef="InformationViewByHr" targetRef="Event_0sbww37" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0aj9q91">
+      <bpmndi:BPMNShape id="Participant_1nxgu8f_di" bpmnElement="Participant_1nxgu8f" isHorizontal="true">
+        <dc:Bounds x="129" y="120" width="3609" height="810" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0tflj9h_di" bpmnElement="Lane_0tflj9h" isHorizontal="true">
+        <dc:Bounds x="159" y="720" width="3579" height="210" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1ckeevf_di" bpmnElement="Lane_1ckeevf" isHorizontal="true">
+        <dc:Bounds x="159" y="520" width="3579" height="200" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0lo4nks_di" bpmnElement="Lane_0lo4nks" isHorizontal="true">
+        <dc:Bounds x="159" y="320" width="3579" height="200" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0mvp48s_di" bpmnElement="Lane_0mvp48s" isHorizontal="true">
+        <dc:Bounds x="159" y="120" width="3579" height="200" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0p48o0a_di" bpmnElement="RequestReviewByHr">
+        <dc:Bounds x="630" y="380" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_17ds0l7_di" bpmnElement="Gateway_17ds0l7" isMarkerVisible="true">
+        <dc:Bounds x="805" y="395" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0we6cjy_di" bpmnElement="RequestReviewByCeo">
+        <dc:Bounds x="1030" y="580" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0gk9w2b_di" bpmnElement="Gateway_0gk9w2b" isMarkerVisible="true">
+        <dc:Bounds x="1215" y="595" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_03ye733_di" bpmnElement="Gateway_03ye733" isMarkerVisible="true">
+        <dc:Bounds x="1345" y="595" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1gmycup_di" bpmnElement="IntervieweeReviewByCeo">
+        <dc:Bounds x="2360" y="580" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02hp3io_di" bpmnElement="IntervieweeReviewByHr">
+        <dc:Bounds x="1940" y="380" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_18ugrf6_di" bpmnElement="Gateway_18ugrf6" isMarkerVisible="true">
+        <dc:Bounds x="2135" y="395" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="252" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0hvd2pz_di" bpmnElement="RequestForm">
+        <dc:Bounds x="350" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_08smyyf_di" bpmnElement="IntervieweeListForm">
+        <dc:Bounds x="1610" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1s869mx_di" bpmnElement="Gateway_1s869mx" isMarkerVisible="true">
+        <dc:Bounds x="1805" y="195" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_07476aw_di" bpmnElement="IntervieweeItemForm">
+        <dc:Bounds x="1940" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0skm80s_di" bpmnElement="Gateway_0skm80s" isMarkerVisible="true">
+        <dc:Bounds x="2545" y="595" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1myi7ie_di" bpmnElement="InformationViewByAccountant">
+        <dc:Bounds x="2780" y="780" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1mc2k0y_di" bpmnElement="Gateway_1mc2k0y" isMarkerVisible="true">
+        <dc:Bounds x="2965" y="795" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0t2ix22_di" bpmnElement="WelcomeSms">
+        <dc:Bounds x="3120" y="780" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13l1k97_di" bpmnElement="InformationViewByHr">
+        <dc:Bounds x="3470" y="380" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0sbww37_di" bpmnElement="Event_0sbww37">
+        <dc:Bounds x="3662" y="402" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0govtgy_di" bpmnElement="Flow_0govtgy">
+        <di:waypoint x="830" y="395" />
+        <di:waypoint x="830" y="350" />
+        <di:waypoint x="400" y="350" />
+        <di:waypoint x="400" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13xksp9_di" bpmnElement="Flow_13xksp9">
+        <di:waypoint x="450" y="220" />
+        <di:waypoint x="540" y="220" />
+        <di:waypoint x="540" y="420" />
+        <di:waypoint x="630" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0j9q7j1_di" bpmnElement="Flow_0j9q7j1">
+        <di:waypoint x="1240" y="595" />
+        <di:waypoint x="1240" y="550" />
+        <di:waypoint x="680" y="550" />
+        <di:waypoint x="680" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1id8kwh_di" bpmnElement="Flow_1id8kwh">
+        <di:waypoint x="730" y="420" />
+        <di:waypoint x="805" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nln2fw_di" bpmnElement="Flow_1nln2fw">
+        <di:waypoint x="855" y="420" />
+        <di:waypoint x="940" y="420" />
+        <di:waypoint x="940" y="620" />
+        <di:waypoint x="1030" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vf4kng_di" bpmnElement="Flow_1vf4kng">
+        <di:waypoint x="1130" y="620" />
+        <di:waypoint x="1215" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bbyfdo_di" bpmnElement="Flow_0bbyfdo">
+        <di:waypoint x="1265" y="620" />
+        <di:waypoint x="1345" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1erj70c_di" bpmnElement="Flow_1erj70c">
+        <di:waypoint x="1395" y="620" />
+        <di:waypoint x="1490" y="620" />
+        <di:waypoint x="1490" y="220" />
+        <di:waypoint x="1610" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hjlriv_di" bpmnElement="Flow_0hjlriv">
+        <di:waypoint x="1370" y="645" />
+        <di:waypoint x="1370" y="830" />
+        <di:waypoint x="2780" y="830" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ybov0v_di" bpmnElement="Flow_1ybov0v">
+        <di:waypoint x="2160" y="395" />
+        <di:waypoint x="2160" y="350" />
+        <di:waypoint x="1660" y="350" />
+        <di:waypoint x="1660" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0oo4gg9_di" bpmnElement="Flow_0oo4gg9">
+        <di:waypoint x="1830" y="245" />
+        <di:waypoint x="1830" y="420" />
+        <di:waypoint x="1940" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0n98k73_di" bpmnElement="Flow_0n98k73">
+        <di:waypoint x="2185" y="420" />
+        <di:waypoint x="2270" y="420" />
+        <di:waypoint x="2270" y="620" />
+        <di:waypoint x="2360" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07yytwx_di" bpmnElement="Flow_07yytwx">
+        <di:waypoint x="2460" y="620" />
+        <di:waypoint x="2545" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kh28r0_di" bpmnElement="Flow_0kh28r0">
+        <di:waypoint x="2570" y="595" />
+        <di:waypoint x="2570" y="550" />
+        <di:waypoint x="1990" y="550" />
+        <di:waypoint x="1990" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1r8wu16_di" bpmnElement="Flow_1r8wu16">
+        <di:waypoint x="2040" y="420" />
+        <di:waypoint x="2135" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ei5f3q_di" bpmnElement="Flow_1ei5f3q">
+        <di:waypoint x="288" y="220" />
+        <di:waypoint x="350" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1efnw4n_di" bpmnElement="Flow_1efnw4n">
+        <di:waypoint x="1990" y="180" />
+        <di:waypoint x="1990" y="150" />
+        <di:waypoint x="1660" y="150" />
+        <di:waypoint x="1660" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0av6j50_di" bpmnElement="Flow_0av6j50">
+        <di:waypoint x="1710" y="220" />
+        <di:waypoint x="1805" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0g3u35f_di" bpmnElement="Flow_0g3u35f">
+        <di:waypoint x="1855" y="220" />
+        <di:waypoint x="1940" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01a2qnf_di" bpmnElement="Flow_01a2qnf">
+        <di:waypoint x="2595" y="620" />
+        <di:waypoint x="2680" y="620" />
+        <di:waypoint x="2680" y="810" />
+        <di:waypoint x="2780" y="810" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0yecwuv_di" bpmnElement="Flow_0yecwuv">
+        <di:waypoint x="2880" y="820" />
+        <di:waypoint x="2965" y="820" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nz9crj_di" bpmnElement="Flow_1nz9crj">
+        <di:waypoint x="3015" y="820" />
+        <di:waypoint x="3120" y="820" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vvhcf9_di" bpmnElement="Flow_1vvhcf9">
+        <di:waypoint x="2990" y="795" />
+        <di:waypoint x="2990" y="750" />
+        <di:waypoint x="3520" y="750" />
+        <di:waypoint x="3520" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gbekvv_di" bpmnElement="Flow_1gbekvv">
+        <di:waypoint x="3220" y="820" />
+        <di:waypoint x="3350" y="820" />
+        <di:waypoint x="3350" y="420" />
+        <di:waypoint x="3470" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tp1v6f_di" bpmnElement="Flow_0tp1v6f">
+        <di:waypoint x="3570" y="420" />
+        <di:waypoint x="3662" y="420" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
